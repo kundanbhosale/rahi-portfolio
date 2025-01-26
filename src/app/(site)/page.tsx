@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, SendHorizonal } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,11 +23,11 @@ const services = [
 ];
 
 export default async function Home() {
-  const settings = await keystaticReader.singletons.settings.read();
-  const posts = await keystaticReader.collections.posts.all();
-  const projects = await keystaticReader.collections.projects.all();
-
-  const home = await keystaticReader.singletons.home.read();
+  const reader = await keystaticReader();
+  const settings = await reader.singletons.settings.read();
+  const posts = await reader.collections.posts.all();
+  const projects = await reader.collections.projects.all();
+  const home = await reader.singletons.home.read();
 
   return (
     <div className="space-y-16 md:space-y-24">
@@ -146,11 +145,7 @@ export default async function Home() {
             >
               <div className="aspect-square relative">
                 <Image
-                  src={
-                    keystaticReader.config.collections.projects.previewUrl ||
-                    "" + item.entry.coverImage ||
-                    ""
-                  }
+                  src={item.entry.coverImage || ""}
                   fill
                   alt=""
                   className="aspect-square object-cover object-center"

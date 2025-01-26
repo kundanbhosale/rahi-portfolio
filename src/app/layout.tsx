@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import { cookies, draftMode } from "next/headers";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -22,12 +22,23 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { isEnabled } = await draftMode();
+  const c = await cookies();
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        {isEnabled && (
+          <div>
+            Draft mode ({c.get("ks-branch")?.value}){" "}
+            <form method="POST" action="/preview/end">
+              <button>End preview</button>
+            </form>
+          </div>
+        )}
       </body>
     </html>
   );

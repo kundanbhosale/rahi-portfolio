@@ -14,7 +14,9 @@ import Link from "next/link";
 
 export default async function Page() {
   // 2. Read the "projects" collection
-  const projects = await keystaticReader.collections.projects.all();
+  const reader = await keystaticReader();
+
+  const projects = await reader.collections.projects.all();
   return (
     <div className="relative py-16 space-y-16">
       <Heading className="max-w-xl">
@@ -32,11 +34,7 @@ export default async function Page() {
           >
             <div className="aspect-square relative">
               <Image
-                src={
-                  keystaticReader.config.collections.projects.previewUrl ||
-                  "" + item.entry.coverImage ||
-                  ""
-                }
+                src={item.entry.coverImage || ""}
                 fill
                 alt=""
                 className="aspect-square object-cover object-center"

@@ -5,7 +5,9 @@ import { Heading } from "@/components/ui/typographt";
 import { keystaticReader } from "@/lib/reader";
 
 export const generateStaticParams = async () => {
-  const projects = await keystaticReader.collections.projects.all();
+  const reader = await keystaticReader();
+
+  const projects = await reader.collections.projects.all();
 
   return projects.map((post) => ({
     slug: post.slug,
@@ -17,8 +19,10 @@ export default async function Post({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const reader = await keystaticReader();
+
   const slug = (await params).slug;
-  const post = await keystaticReader.collections.projects.read(slug);
+  const post = await reader.collections.projects.read(slug);
 
   if (!post) {
     return <div>No Post Found</div>;

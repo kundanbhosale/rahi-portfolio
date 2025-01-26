@@ -13,7 +13,9 @@ import { Fragment } from "react";
 
 export default async function Page() {
   // 2. Read the "Posts" collection
-  const posts = await keystaticReader.collections.posts.all();
+  const reader = await keystaticReader();
+
+  const posts = await reader.collections.posts.all();
   return (
     <div className="relative py-16 space-y-16">
       <Heading className="max-w-xl">

@@ -5,7 +5,8 @@ import { Heading } from "@/components/ui/typographt";
 import { keystaticReader } from "@/lib/reader";
 import { notFound } from "next/navigation";
 const Page = async () => {
-  const about = await keystaticReader.singletons.about.read();
+  const reader = await keystaticReader();
+  const about = await reader.singletons.about.read();
   if (!about) return notFound();
   const { node } = await about.content();
   const errors = Markdoc.validate(node);
