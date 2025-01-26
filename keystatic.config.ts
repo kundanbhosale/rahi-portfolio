@@ -181,10 +181,14 @@ export default config({
         }),
       },
     }),
-    externalArticles: collection({
-      label: "External Article",
-      path: "content/externalArticles/*/",
+    projects: collection({
+      label: "Projects",
+      path: "content/projects/*/",
       slugField: "title",
+      entryLayout: "content",
+      format: {
+        contentField: "content",
+      },
       schema: {
         title: fields.slug({
           name: {
@@ -192,16 +196,15 @@ export default config({
             validation: { length: { min: 4 } },
           },
         }),
-        directLink: fields.url({
-          label: "Article Link",
+        content: fields.markdoc({
+          label: "Content",
+          //   componentBlocks: ComponentBlocks,
         }),
-        source: fields.text({
-          label: "Link Source",
-          defaultValue: "Read more.",
-        }),
+
         coverImage: fields.image({
           label: "Cover Image",
-          directory: "public/uploads/external-articles",
+          directory: "public/uploads/projects",
+          publicPath: "/uploads/projects/",
         }),
         summary: fields.text({
           label: "Summary",
@@ -213,5 +216,37 @@ export default config({
         }),
       },
     }),
+    // externalArticles: collection({
+    //   label: "External Article",
+    //   path: "content/externalArticles/*/",
+    //   slugField: "title",
+    //   schema: {
+    //     title: fields.slug({
+    //       name: {
+    //         label: "Title",
+    //         validation: { length: { min: 4 } },
+    //       },
+    //     }),
+    //     directLink: fields.url({
+    //       label: "Article Link",
+    //     }),
+    //     source: fields.text({
+    //       label: "Link Source",
+    //       defaultValue: "Read more.",
+    //     }),
+    //     coverImage: fields.image({
+    //       label: "Cover Image",
+    //       directory: "public/uploads/external-articles",
+    //     }),
+    //     summary: fields.text({
+    //       label: "Summary",
+    //       validation: { length: { min: 4, max: 200 } },
+    //     }),
+    //     publishedDate: fields.date({
+    //       label: "Published Date",
+    //       defaultValue: new Date().toISOString().split("T")[0],
+    //     }),
+    //   },
+    // }),
   },
 });

@@ -20,7 +20,7 @@ export const DefaultNav = () => {
 
         <Link href={"/about"}>About</Link>
         <Link href={"/posts"}>Blog</Link>
-        <Link href={"/project"}>Projects</Link>
+        <Link href={"/projects"}>Projects</Link>
         {/* {session.data?.user && (
           <Link href={"/profile"} className="flex gap-2 items-center">
             <span>{session.data?.user.name.split(" ")[0]}</span>

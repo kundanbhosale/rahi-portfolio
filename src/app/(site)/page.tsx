@@ -26,6 +26,8 @@ const services = [
 export default async function Home() {
   const settings = await keystaticReader.singletons.settings.read();
   const posts = await keystaticReader.collections.posts.all();
+  const projects = await keystaticReader.collections.projects.all();
+
   const home = await keystaticReader.singletons.home.read();
 
   return (
@@ -119,7 +121,7 @@ export default async function Home() {
         <div className="flex justify-between gap-8 items-center">
           <h1 className="text-4xl font-semibold py-6">My Work</h1>
           <Link
-            href={""}
+            href={"/projects"}
             className={cn(
               buttonVariants({ variant: "default", size: "default" }),
               "rounded-full"
@@ -133,28 +135,34 @@ export default async function Home() {
         </div>
 
         <div className="grid md:grid-cols-4 gap-4">
-          {[...Array(5)].map((item, i) => (
-            <div
+          {projects.slice(0, 5).map((item, i) => (
+            <Link
+              href={"/projects/" + item.slug}
               key={i}
               className={cn(
-                "relative aspect-square",
+                "grayscale hover:grayscale-0",
                 i === 0 && "col-span-2 row-span-2"
               )}
             >
-              <Image
-                src={
-                  "https://plus.unsplash.com/premium_photo-1668418188928-eb7d85411c01?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                }
-                fill
-                alt=""
-                className="aspect-square object-cover object-center"
-              />
+              <div className="aspect-square relative">
+                <Image
+                  src={
+                    keystaticReader.config.collections.projects.previewUrl ||
+                    "" + item.entry.coverImage ||
+                    ""
+                  }
+                  fill
+                  alt=""
+                  className="aspect-square object-cover object-center"
+                />
+              </div>
+
               <div className="flex space-x-2 z-10 absolute bottom-0 left-0 w-full bg-background">
                 <p className="font-medium text-sm md:text-base truncate">
-                  Title of the project
+                  {item.entry.title}
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -234,10 +242,10 @@ export default async function Home() {
         </h1>
       </div>
       <div className="flex flex-col-reverse md:flex-row md:justify-between gap-2">
-        <div className="flex space-x-2 w-full justify-center">
+        <div className="flex space-x-2 w-full justify-center md:justify-start">
           <a href={""}>© Copyright 2023 {settings?.site.name}</a>
         </div>
-        <div className="flex space-x-4 justify-center [&_svg]:size-6 w-full">
+        <div className="flex space-x-4 justify-center md:justify-end [&_svg]:size-6 w-full">
           {settings?.social.instagram && (
             <a href={settings.social.instagram}>{<Instagram />}</a>
           )}

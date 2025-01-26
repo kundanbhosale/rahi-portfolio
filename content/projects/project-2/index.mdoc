@@ -1,0 +1,30 @@
+---
+title: Project 2
+coverImage: /uploads/projects/project-2/coverImage.jpg
+summary: >-
+  I love programming. Writing code allows me to express myself in building
+  something for the world. Here are some of the things that I’ve recently spent
+  time on.
+publishedDate: 2025-01-26
+---
+# This post appeared as a guest post on the official [**Supabase Blog**](https://supabase.com/blog/react-native-offline-first-watermelon-db).
+
+Using the Supabase JavaScript Client in a React Native, it is super easy to fetch data from a Supabase backend by simply calling functions like **`supabase.from('countries').select()`** wherever the data is needed. However, another approach to handling data in mobile apps recently gained a lot of popularity: Offline-first - meaning an app works primarily offline and synchronizes data whenever possible. This has multiple advantages, the obvious being that the app can be used offline. But even when the app is used online, the user experience still profits from this approach as reading and updating data feels instantaneous as it happens on the device first and is then synced in the background. The approach also has drawbacks: Data can become stale, and if it is changed in multiple places while offline, data conflicts can occur. There are sophisticated database technologies like CRDT (conflict-free replicated data type), which are also making their way into mobile apps. For our example, we will not reach for a CRDT and instead use WatermelonDB, an open-source solution built on SQLite that includes a sync engine and applies the simple strategy of just letting the latest change of a record win. Follow along to build a React Native/Expo app that uses WatermelonDB as the offline-first data store and syncs to a Supabase backend using Remote Procedure Calls and Supabase Realtime to trigger sync on other devices.
+
+The approach described in this blog post was developed while building [**Share My Stack**](https://sharemystack.com/). This mobile app allows people to curate and share their personal productivity stack as well as their favorite development stack. The app is available on the [**App Store**](https://apps.apple.com/us/app/share-my-stack/id6450111644), and the complete source code is available on [**GitHub**](https://github.com/bndkt/sharemystack/) for educational purposes. Here is a little demo of what the result looks like when using the app on two separate devices:
+
+For this tutorial, we'll be implementing a small part of the Share My Stack data model, namely the ability to have a "profile," which belongs to a "user" (stored in auth.users) and can have multiple "stacks" associated with it (see the output from the Supabase Schema Visualizer below for illustration). With that said, let's dive into building our local-first app ...
+
+## **Create a React Native/Expo app**
+
+```
+npx create-expo-app OfflineFirstWithSupabase
+```
+
+## **Add required dependencies**
+
+The first step is to add the required dependencies to your React Native project: WatermelonDB, Supabase, and expo-build-properties, which we'll use in the next step to customize the React Native app build.
+
+```
+npm install @nozbe/watermelondb @supabase/supabase-js expo-build-properties
+```
