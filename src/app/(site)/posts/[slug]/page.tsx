@@ -4,14 +4,22 @@ import Markdoc from "@markdoc/markdoc";
 import { Heading } from "@/components/ui/typographt";
 import { keystaticReader } from "@/lib/reader";
 
+export const generateStaticParams = async () => {
+  const posts = await keystaticReader.collections.posts.all();
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+};
+
 export default async function Post({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const slug = (await params).slug;
+  const post = await keystaticReader.collections.posts.read(slug);
 
-  const post = await keystaticReader.collections.posts.readOrThrow(slug);
   if (!post) {
     return <div>No Post Found</div>;
   }

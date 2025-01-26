@@ -3,13 +3,13 @@ import { keystaticReader } from "@/lib/reader";
 import Link from "next/link";
 import { Fragment } from "react";
 
-export async function generateStaticParams() {
-  const posts = await keystaticReader.collections.posts.all();
+// export async function generateStaticParams() {
+//   const posts = await keystaticReader.collections.posts.all();
 
-  return posts.map((post) => ({
-    id: post.slug.toString(),
-  }));
-}
+//   return posts.map((post) => ({
+//     id: post.slug.toString(),
+//   }));
+// }
 
 export default async function Page() {
   // 2. Read the "Posts" collection
