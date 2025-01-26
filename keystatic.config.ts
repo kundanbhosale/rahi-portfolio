@@ -32,13 +32,22 @@ export default config({
       label: "Home",
       path: "content/pages/home/",
       schema: {
-        heading: fields.markdoc({
-          // formatting: {
-          //   inlineMarks: {
-          //     bold: true,
-          //   },
-          // },
-          label: "Heading (note: text that is bolded will show up in red)",
+        title: fields.text({
+          label: "Title",
+          multiline: true,
+          defaultValue: "Rahi Gurav.",
+        }),
+        designation: fields.text({
+          label: "Designation",
+          multiline: true,
+          defaultValue:
+            "Travel Journalist | Tour Manager | Production & Content Writer",
+        }),
+        bio: fields.text({
+          label: "A bit about you",
+          multiline: true,
+          defaultValue:
+            "Storytelling on camera is home to me. I see myself travelling the world and giving an experience to the people through my lenses and writeups. Confident, ambitious, great communicator, brave, mindful and a fast learner",
         }),
       },
     }),

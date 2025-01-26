@@ -5,7 +5,6 @@ import { ArrowRight, ArrowUpRight, SendHorizonal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// import AudioWave from "@/components/audio";
 import { Facebook, Instagram, Linkedin, Youtube } from "@/components/icons";
 import { keystaticReader } from "@/lib/reader";
 
@@ -26,10 +25,12 @@ const services = [
 
 export default async function Home() {
   const settings = await keystaticReader.singletons.settings.read();
+  const posts = await keystaticReader.collections.posts.all();
+  const home = await keystaticReader.singletons.home.read();
 
   return (
-    <div className="space-y-24">
-      <div className="w-full grid grid-cols-2 overflow-hidden h-[700px] 2xl:mt-20 items-center border-b-2 border-foreground">
+    <div className="space-y-16 md:space-y-24">
+      <div className="w-full grid md:grid-cols-2 overflow-hidden h-[700px] 2xl:mt-20 items-center border-b-2 border-foreground">
         <div className="space-y-6">
           {/* <div className="rounded-full overflow-hidden ring-background border border-background shadow w-fit">
             <Image
@@ -40,19 +41,14 @@ export default async function Home() {
             />
           </div> */}
           <div className="relative h-fit">
-            <h1 className="text-9xl font-black inline-flex">Rahi Gurav.</h1>
+            <h1 className="text-7xl md:text-9xl font-black inline-flex">
+              {home?.title}
+            </h1>
           </div>
-          <h2 className="text-2xl font-medium max-w-lg">
-            Travel Journalist | Tour Manager | Production & Content Writer
-          </h2>
-          <p className="max-w-lg">
-            Storytelling on camera is home to me. I see myself travelling the
-            world and giving an experience to the people through my lenses and
-            writeups. Confident, ambitious, great communicator, brave, mindful
-            and a fast learner
-          </p>
+          <h2 className="text-2xl font-medium max-w-lg">{home?.designation}</h2>
+          <p className="max-w-lg">{home?.bio}</p>
 
-          <div className="flex space-x-4 pt-4 items-center">
+          <div className="flex pt-4 items-center flex-wrap gap-4">
             <div>
               <Button className="rounded-full" size={"lg"}>
                 Hire Me <ArrowUpRight className="size-4" />
@@ -76,10 +72,7 @@ export default async function Home() {
         </div>
 
         <div className="flex items-center justify-center -z-10 relative h-full flex-1">
-          <div
-            className="absolute bottom-[-55%] grayscale"
-            style={{ width: "1700px", height: "1700px" }}
-          >
+          <div className="hidden md:block w-[1700px] h-[1700px] absolute bottom-[-55%] grayscale">
             <Image
               src="/images/f1.png"
               alt="Rahi Gurav"
@@ -103,20 +96,20 @@ export default async function Home() {
         </div>
       </div>
       <div>{/* <AudioWave /> */}</div>
-      <div className="grid grid-cols-2 w-full gap-8 justify-end items-center">
-        <h1 className="text-4xl font-medium">
+      <div className="grid md:grid-cols-2 w-full gap-8 justify-end items-center">
+        <h1 className="text-2xl md:text-4xl font-medium w-fit">
           Drop your email, I&apos;ll get back to you at light speed{" "}
-          <span className="">
+          <span className="inline-flex h-full">
             <ArrowRight className="size-8" strokeWidth={2} />
           </span>
         </h1>
         <div className="">
           <div className="flex items-center border rounded-xl focus-within:bg-muted overflow-hidden">
             <Input
-              className="text-lg h-16 px-6 border-0"
+              className="md:text-lg h-10 md:h-16 px-6 border-0"
               placeholder="Type your email..."
             />
-            <Button className="size-16 [&_svg]:size-6 rounded-xl">
+            <Button className="size-10 md:size-16 [&_svg]:size-4 md:[&_svg]:size-6 rounded-xl">
               <SendHorizonal className="" />
             </Button>
           </div>
@@ -139,7 +132,7 @@ export default async function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-4 gap-4">
           {[...Array(5)].map((item, i) => (
             <div
               key={i}
@@ -154,10 +147,12 @@ export default async function Home() {
                 }
                 fill
                 alt=""
-                className="aspect-square object-cover"
+                className="aspect-square object-cover object-center"
               />
               <div className="flex space-x-2 z-10 absolute bottom-0 left-0 w-full bg-background">
-                <p className="font-medium">Title of the project</p>
+                <p className="font-medium text-sm md:text-base truncate">
+                  Title of the project
+                </p>
               </div>
             </div>
           ))}
@@ -165,7 +160,7 @@ export default async function Home() {
       </div>
       <div>
         <h1 className="text-4xl font-semibold py-6">My Services</h1>
-        <div className="grid grid-cols-3 gap-10">
+        <div className="grid md:grid-cols-3 gap-10">
           {services.map((item, i) => (
             <div className="" key={i}>
               <div className="aspect-square relative bg-blue-500">
@@ -185,24 +180,19 @@ export default async function Home() {
       </div>
       <div>
         <h1 className="text-4xl font-semibold py-6">Few Articles I Wrote:</h1>
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           <div className="space-y-8 col-span-2">
-            {[...Array(4)].map((item, i) => (
+            {posts.slice(0, 6).map((item, i) => (
               <div key={i}>
                 <Link
                   href={"/blog/id"}
                   className="hover:scale-[1.005] transition-all ease-linear hover:bg-muted p-2 block"
                 >
                   <p className="">
-                    <span className="font-medium">
-                      Title of the blog written by me.
-                    </span>
+                    <span className="font-medium">{item.entry.title}</span>
                   </p>
-                  <p className="font-light">
-                    A Table of Contents improves document navigation and
-                    provides a quick overview of your content structure. A Table
-                    of Contents improves document navigation and provides a
-                    quick overview of your content structure
+                  <p className="font-light line-clamp-3">
+                    {item.entry.summary}
                   </p>
                   {/* <div className="justify-between flex">
                   <span className="text-sm text-muted-foreground">
@@ -216,7 +206,7 @@ export default async function Home() {
               </div>
             ))}
             <Link
-              href={""}
+              href={"/posts"}
               className={cn(
                 buttonVariants({ variant: "default", size: "default" }),
                 "rounded-full"
@@ -232,20 +222,22 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className="border-t-2 pt-24 pb-8 border-foreground grid grid-cols-3 w-full gap-8">
-        <h1 className="text-5xl font-medium col-span-2">
+      <div className="border-t-2 pt-24 pb-8 border-foreground grid md:grid-cols-3 w-full gap-4 md:gap-8">
+        <h1 className="text-3xl md:text-5xl font-medium col-span-2">
           I am thrilled to answer questions about your next project{" "}
-          <span className="">
-            <ArrowRight className="size-8" strokeWidth={2} />
+          <span className="inline-flex">
+            <ArrowRight className="size-6 md:size-8" strokeWidth={2} />
           </span>
         </h1>
-        <h1 className="text-3xl mt-2 text-end">rahiruns@gmail.com</h1>
+        <h1 className="text-3xl mt-2 text-end text-primary">
+          rahiruns@gmail.com
+        </h1>
       </div>
-      <div className="flex justify-between space-x-2">
-        <div className="flex space-x-2">
+      <div className="flex flex-col-reverse md:flex-row md:justify-between gap-2">
+        <div className="flex space-x-2 w-full justify-center">
           <a href={""}>© Copyright 2023 {settings?.site.name}</a>
         </div>
-        <div className="flex space-x-4 [&_svg]:size-6">
+        <div className="flex space-x-4 justify-center [&_svg]:size-6 w-full">
           {settings?.social.instagram && (
             <a href={settings.social.instagram}>{<Instagram />}</a>
           )}

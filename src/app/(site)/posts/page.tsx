@@ -17,15 +17,15 @@ export default async function Page() {
   return (
     <div className="relative py-16 space-y-16">
       <Heading>Writing on programming, productivity, and life.</Heading>
-      <div className="grid grid-cols-[150px,auto] border-l px-8 gap-4">
+      <div className="grid md:grid-cols-[150px,auto] border-l px-8 gap-4">
         {posts.map((p, i) => (
           <Fragment key={i}>
-            <p className="text-muted-foreground py-4">
+            <p className="text-muted-foreground pt-10 md:py-4">
               {p.entry.publishedDate}
             </p>
             <Link
               href={`/posts/${p.slug}`}
-              className="group hover:bg-muted p-4 transition-all ease-linear"
+              className="group hover:bg-muted md:p-4 transition-all ease-linear"
             >
               <h3 className="font-semibold group-hover:text-primary">
                 {p.entry.title}

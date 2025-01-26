@@ -41,7 +41,12 @@ export function Heading({
   className?: string;
 }) {
   return (
-    <h2 className={cn("text-5xl font-medium leading-tight", className)}>
+    <h2
+      className={cn(
+        "text-2xl md:text-5xl font-medium leading-tight",
+        className
+      )}
+    >
       {children}
     </h2>
   );
