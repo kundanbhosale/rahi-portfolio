@@ -38,7 +38,8 @@ export const keystaticReader = cache(async () => {
           .NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG!}`,
         ref: branch,
         // Assuming an existing GitHub app
-        token: c.get("keystatic-gh-access-token")?.value,
+        // token: c.get("keystatic-gh-access-token")?.value,
+        token: process.env.GITHUB_PAT,
       });
     }
   }
@@ -47,7 +48,7 @@ export const keystaticReader = cache(async () => {
     ? createGitHubReader(keystaticConfig, {
         repo: `${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER!}/${process.env
           .NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG!}`,
-        // token: process.env.GITHUB_PAT,
+        token: process.env.GITHUB_PAT,
       })
     : createReader(process.cwd(), keystaticConfig);
 });
