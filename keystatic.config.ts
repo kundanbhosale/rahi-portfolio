@@ -20,6 +20,12 @@ const storage: LocalConfig["storage"] | GitHubConfig["storage"] =
         },
       };
 
+const makePreview = (url: string) => {
+  return storage.kind === "github"
+    ? `/preview/start?branch={branch}&to=${url}`
+    : url;
+};
+
 export default config({
   storage,
   ui: {
@@ -31,7 +37,13 @@ export default config({
     home: singleton({
       label: "Home",
       path: "content/pages/home/",
+
+      previewUrl: makePreview("/"),
       schema: {
+        heroImg: fields.image({
+          label: "Hero Image",
+          directory: "public/uploads/home",
+        }),
         title: fields.text({
           label: "Title",
           multiline: true,
@@ -54,6 +66,8 @@ export default config({
     about: singleton({
       label: "About",
       path: "content/pages/about/",
+      previewUrl: makePreview("/about"),
+
       schema: {
         content: fields.markdoc({
           // formatting: true,
@@ -73,10 +87,15 @@ export default config({
     settings: singleton({
       label: "Settings",
       path: "content/pages/settings/",
+
       schema: {
         site: fields.object(
           {
             name: fields.text({ label: "Site Name" }),
+            summary: fields.text({
+              label: "Site Meta Description",
+              multiline: true,
+            }),
           },
           { label: "Site Configuration" }
         ),
@@ -116,6 +135,7 @@ export default config({
     authors: collection({
       label: "Authors",
       path: "content/authors/*",
+
       slugField: "name",
       schema: {
         name: fields.slug({
@@ -138,6 +158,8 @@ export default config({
     posts: collection({
       label: "Posts",
       path: "content/posts/*/",
+      previewUrl: makePreview("/posts/{slug}"),
+
       slugField: "title",
       entryLayout: "content",
       format: {
@@ -184,6 +206,8 @@ export default config({
     projects: collection({
       label: "Projects",
       path: "content/projects/*/",
+      previewUrl: makePreview("/projects/{slug}"),
+
       slugField: "title",
       entryLayout: "content",
       format: {
