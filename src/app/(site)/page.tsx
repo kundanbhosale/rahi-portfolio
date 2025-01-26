@@ -193,7 +193,7 @@ export default async function Home() {
             {posts.slice(0, 6).map((item, i) => (
               <div key={i}>
                 <Link
-                  href={"/blog/id"}
+                  href={"/posts/" + item.slug}
                   className="hover:scale-[1.005] transition-all ease-linear hover:bg-muted p-2 block"
                 >
                   <p className="">
@@ -226,7 +226,7 @@ export default async function Home() {
               </span>
             </Link>
           </div>
-          <div className="border aspect-square sticky top-10"></div>
+          <div className="border aspect-square sticky top-10 bg-muted"></div>
         </div>
       </div>
 
