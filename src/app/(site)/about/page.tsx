@@ -17,7 +17,9 @@ const Page = async () => {
 
   return (
     <div className="space-y-16 max-w-screen-lg m-auto py-16 ">
-      <Heading>About Me</Heading>
+      <Heading className="max-w-xl">
+        Writing on programming, productivity, and life.
+      </Heading>
       {/* <Image src={post.coverImage} full /> */}
       <div className="mt-8 prose dark:prose-invert max-w-none">
         {Markdoc.renderers.react(renderable, React)}

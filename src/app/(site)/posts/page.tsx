@@ -16,7 +16,9 @@ export default async function Page() {
   const posts = await keystaticReader.collections.posts.all();
   return (
     <div className="relative py-16 space-y-16">
-      <Heading>Writing on programming, productivity, and life.</Heading>
+      <Heading className="max-w-xl">
+        Writing on programming, productivity, and life.
+      </Heading>
       <div className="grid md:grid-cols-[150px,auto] border-l px-8 gap-4">
         {posts.map((p, i) => (
           <Fragment key={i}>
