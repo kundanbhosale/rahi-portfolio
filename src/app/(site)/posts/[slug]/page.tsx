@@ -11,7 +11,7 @@ export default async function Post({
 }) {
   const slug = (await params).slug;
 
-  const post = await keystaticReader.collections.posts.read(slug);
+  const post = await keystaticReader.collections.posts.readOrThrow(slug);
   if (!post) {
     return <div>No Post Found</div>;
   }
