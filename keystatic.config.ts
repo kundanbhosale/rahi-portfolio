@@ -10,7 +10,7 @@ import siteConfig from "./site.config";
 //   import { ComponentBlocks } from "./components/ComponentBlocks";
 
 const storage: LocalConfig["storage"] | GitHubConfig["storage"] =
-  process.env.NODE_ENV === "development"
+  process.env.NODE_ENV !== "development"
     ? { kind: "local" }
     : {
         kind: "github",
