@@ -48,7 +48,7 @@ export default async function Post({
     <div className="space-y-16 max-w-screen-md m-auto py-16 ">
       <Heading>{post.title}</Heading>
       <div>
-        <AuthorList authors={authorsData} post={post} />
+        <AuthorList authors={authorsData as never} post={post} />
       </div>
       {post.coverImage && (
         <div>
