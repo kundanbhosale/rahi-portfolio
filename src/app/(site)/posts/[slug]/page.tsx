@@ -3,6 +3,8 @@ import Markdoc from "@markdoc/markdoc";
 
 import { Heading } from "@/components/ui/typographt";
 import { keystaticReader } from "@/lib/reader";
+import Image from "next/image";
+import AuthorList from "@/components/blog/authors";
 
 export const generateStaticParams = async () => {
   const reader = await keystaticReader();
@@ -33,10 +35,32 @@ export default async function Post({
     console.error(errors);
     throw new Error("Invalid content");
   }
+
+  const authorsData = await Promise.all(
+    post.authors.map(async (authorSlug) => {
+      const author = await reader.collections.authors.read(authorSlug || "");
+      return { ...author, slug: authorSlug };
+    })
+  );
+
   const renderable = Markdoc.transform(node);
   return (
-    <div className="space-y-16 max-w-screen-lg m-auto py-16 ">
+    <div className="space-y-16 max-w-screen-md m-auto py-16 ">
       <Heading>{post.title}</Heading>
+      <div>
+        <AuthorList authors={authorsData} post={post} />
+      </div>
+      {post.coverImage && (
+        <div>
+          <Image
+            className="aspect-video"
+            alt=""
+            src={post.coverImage}
+            width={800}
+            height={800}
+          />
+        </div>
+      )}
       {/* <Image src={post.coverImage} full /> */}
       <div className="mt-8 prose dark:prose-invert max-w-none">
         {Markdoc.renderers.react(renderable, React)}

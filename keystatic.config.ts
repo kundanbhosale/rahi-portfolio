@@ -37,12 +37,20 @@ export default config({
     home: singleton({
       label: "Home",
       path: "content/pages/home/",
+      entryLayout: "form",
 
       previewUrl: makePreview("/"),
       schema: {
         heroImg: fields.image({
           label: "Hero Image",
           directory: "public/uploads/home",
+          publicPath: "/uploads/home/",
+        }),
+        heroImgClass: fields.text({ label: "Hero Image Class Names" }),
+        audioFile: fields.file({
+          label: "Hero Audio",
+          directory: "public/uploads/home",
+          publicPath: "/uploads/home/",
         }),
         title: fields.text({
           label: "Title",
@@ -148,10 +156,10 @@ export default config({
             },
           },
         }),
-        role: fields.text({ label: "Role" }),
         avatar: fields.image({
           label: "Author avatar",
           directory: "public/uploads/authors",
+          publicPath: "/uploads/authors/",
         }),
       },
     }),

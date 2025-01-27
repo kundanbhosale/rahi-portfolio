@@ -28,8 +28,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
       >
+        <svg className="pointer-events-none absolute cursor-none h-0">
+          <filter id="grainy">
+            <feTurbulence type="turbulence" baseFrequency="0.5"></feTurbulence>
+            <feColorMatrix type="saturate" values="0"></feColorMatrix>
+          </filter>
+        </svg>
         {children}
         {isEnabled && (
           <div>

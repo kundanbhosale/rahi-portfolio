@@ -3,6 +3,7 @@ import Markdoc from "@markdoc/markdoc";
 
 import { Heading } from "@/components/ui/typographt";
 import { keystaticReader } from "@/lib/reader";
+import Image from "next/image";
 
 export const generateStaticParams = async () => {
   const reader = await keystaticReader();
@@ -35,8 +36,19 @@ export default async function Post({
   }
   const renderable = Markdoc.transform(node);
   return (
-    <div className="space-y-16 max-w-screen-lg m-auto py-16 ">
+    <div className="space-y-16 max-w-screen-md m-auto py-16 ">
       <Heading>{post.title}</Heading>
+      {post.coverImage && (
+        <div>
+          <Image
+            className="aspect-video object-cover object-center"
+            alt=""
+            src={post.coverImage}
+            width={1400}
+            height={1400}
+          />
+        </div>
+      )}
       {/* <Image src={post.coverImage} full /> */}
       <div className="mt-8 prose dark:prose-invert max-w-none">
         {Markdoc.renderers.react(renderable, React)}

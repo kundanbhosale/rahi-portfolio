@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, SendHorizonal } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Facebook, Instagram, Linkedin, Youtube } from "@/components/icons";
 import { keystaticReader } from "@/lib/reader";
+import { Heading } from "@/components/ui/typographt";
+import AudioWave from "@/components/audio";
 
 const services = [
   {
@@ -52,7 +54,7 @@ export default async function Home() {
           <div className="flex pt-4 items-center flex-wrap gap-4">
             <div>
               <Button className="rounded-full" size={"lg"}>
-                Hire Me <ArrowUpRight className="size-4" />
+                Connect <ArrowUpRight className="size-4" />
               </Button>
             </div>
             <div className="flex space-x-4 [&_svg]:size-8">
@@ -73,15 +75,22 @@ export default async function Home() {
         </div>
 
         <div className="flex items-center justify-center -z-10 relative h-full flex-1">
-          <div className="hidden md:block w-[1700px] h-[1700px] absolute bottom-[-55%] grayscale">
-            <Image
-              src="/images/f1.png"
-              alt="Rahi Gurav"
-              fill
-              className="object-cover"
-              quality={80}
-            />
-          </div>
+          {home?.heroImg && (
+            <div
+              className={cn(
+                "hidden md:block h-full w-full grayscale",
+                home.heroImgClass || ""
+              )}
+            >
+              <Image
+                src={home?.heroImg || ""}
+                alt={settings?.site.name || ""}
+                fill
+                className="object-cover"
+                quality={80}
+              />
+            </div>
+          )}
           {/* <div
             className="absolute bottom-[-60%] -left-96 grayscale"
             style={{ width: "1500px", height: "1500px" }}
@@ -96,25 +105,8 @@ export default async function Home() {
           </div> */}
         </div>
       </div>
-      <div>{/* <AudioWave /> */}</div>
-      <div className="grid md:grid-cols-2 w-full gap-8 justify-end items-center">
-        <h1 className="text-2xl md:text-4xl font-medium w-fit">
-          Drop your email, I&apos;ll get back to you at light speed{" "}
-          <span className="inline-flex h-full">
-            <ArrowRight className="size-8" strokeWidth={2} />
-          </span>
-        </h1>
-        <div className="">
-          <div className="flex items-center border rounded-xl focus-within:bg-muted overflow-hidden">
-            <Input
-              className="md:text-lg h-10 md:h-16 px-6 border-0"
-              placeholder="Type your email..."
-            />
-            <Button className="size-10 md:size-16 [&_svg]:size-4 md:[&_svg]:size-6 rounded-xl">
-              <SendHorizonal className="" />
-            </Button>
-          </div>
-        </div>
+      <div>
+        <AudioWave url={home?.audioFile || ""} />
       </div>
       <div>
         <div className="flex justify-between gap-8 items-center">
@@ -139,7 +131,7 @@ export default async function Home() {
               href={"/projects/" + item.slug}
               key={i}
               className={cn(
-                "grayscale hover:grayscale-0",
+                "grayscale-0 hover:grayscale",
                 i === 0 && "col-span-2 row-span-2"
               )}
             >
@@ -160,6 +152,17 @@ export default async function Home() {
             </Link>
           ))}
         </div>
+      </div>
+      <div className="grid md:grid-cols-3 w-full gap-4 md:gap-8">
+        <h1 className="text-3xl md:text-5xl font-medium col-span-2">
+          I am thrilled to answer questions about your next project{" "}
+          <span className="inline-flex">
+            <ArrowRight className="size-6 md:size-8" strokeWidth={2} />
+          </span>
+        </h1>
+        <h1 className="text-3xl mt-2 text-end text-primary font-semibold underline">
+          rahiruns@gmail.com
+        </h1>
       </div>
       <div>
         <h1 className="text-4xl font-semibold py-6">My Services</h1>
@@ -225,34 +228,41 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className="border-t-2 pt-24 pb-8 border-foreground grid md:grid-cols-3 w-full gap-4 md:gap-8">
-        <h1 className="text-3xl md:text-5xl font-medium col-span-2">
-          I am thrilled to answer questions about your next project{" "}
-          <span className="inline-flex">
-            <ArrowRight className="size-6 md:size-8" strokeWidth={2} />
-          </span>
-        </h1>
-        <h1 className="text-3xl mt-2 text-end text-primary">
-          rahiruns@gmail.com
-        </h1>
-      </div>
-      <div className="flex flex-col-reverse md:flex-row md:justify-between gap-2">
-        <div className="flex space-x-2 w-full justify-center md:justify-start">
-          <a href={""}>© Copyright 2023 {settings?.site.name}</a>
+      <div className="grid md:grid-cols-2 w-full gap-8 justify-end items-start border-t-2 pt-24 pb-8 border-foreground">
+        <div className="space-y-8">
+          <Heading className="">
+            Drop your email, I&apos;ll get back to you at light speed{" "}
+            <span className="inline-flex h-full">
+              <ArrowRight className="size-8" strokeWidth={2} />
+            </span>
+          </Heading>
+          <div className="flex space-x-4 [&_svg]:size-10 w-full">
+            {settings?.social.instagram && (
+              <a href={settings.social.instagram}>{<Instagram />}</a>
+            )}
+            {settings?.social.facebook && (
+              <a href={settings.social.facebook}>{<Facebook />}</a>
+            )}
+            {settings?.social.linkedin && (
+              <a href={settings.social.linkedin}>{<Linkedin />}</a>
+            )}
+            {settings?.social.youtube && (
+              <a href={settings.social.youtube}>{<Youtube />}</a>
+            )}
+          </div>
         </div>
-        <div className="flex space-x-4 justify-center md:justify-end [&_svg]:size-6 w-full">
-          {settings?.social.instagram && (
-            <a href={settings.social.instagram}>{<Instagram />}</a>
-          )}
-          {settings?.social.facebook && (
-            <a href={settings.social.facebook}>{<Facebook />}</a>
-          )}
-          {settings?.social.linkedin && (
-            <a href={settings.social.linkedin}>{<Linkedin />}</a>
-          )}
-          {settings?.social.youtube && (
-            <a href={settings.social.youtube}>{<Youtube />}</a>
-          )}
+        <div className="space-y-4">
+          <Input
+            className="md:text-base h-8 md:h-10 px-6 bg-background relative z-50"
+            placeholder="Name"
+          />
+          <Input
+            className="md:text-base h-8 md:h-10 px-6 bg-background relative z-50"
+            placeholder="Email"
+          />
+          <Button className="md:text-base h-8 md:h-10  [&_svg]:size-4 md:[&_svg]:size-6">
+            Submit <ArrowRight className="" />
+          </Button>
         </div>
       </div>
     </div>

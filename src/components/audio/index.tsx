@@ -5,7 +5,7 @@ import { Pause, Play } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 import Hover from "wavesurfer.js/dist/plugins/hover.esm.js";
 
-export default function AudioWave() {
+export default function AudioWave({ url }: { url: string }) {
   const containerRef = useRef(null);
 
   const { ref, inView } = useInView({
@@ -26,10 +26,10 @@ export default function AudioWave() {
     barWidth: 2,
     barGap: 1,
     barRadius: 2,
-    autoplay: true,
+    // autoplay: true,
     waveColor: "#999",
     progressColor: "black",
-    url: "/audio/test.mp3",
+    url,
     plugins: useMemo(
       () => [
         Hover.create({
@@ -55,6 +55,8 @@ export default function AudioWave() {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     e.key === " " && onPlayPause();
   };
+
+  if (!url) return null;
 
   return (
     <div className="group relative" ref={ref}>
