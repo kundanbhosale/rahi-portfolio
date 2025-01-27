@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cookies, draftMode } from "next/headers";
+import { ViewportProvider } from "@/context/viewport";
+import { getIsSsrMobile } from "@/context/isMobile";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -24,27 +26,32 @@ export default async function RootLayout({
 }>) {
   const { isEnabled } = await draftMode();
   const c = await cookies();
-
+  const isMobile = await getIsSsrMobile();
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
       >
-        <svg className="pointer-events-none absolute cursor-none h-0">
-          <filter id="grainy">
-            <feTurbulence type="turbulence" baseFrequency="0.5"></feTurbulence>
-            <feColorMatrix type="saturate" values="0"></feColorMatrix>
-          </filter>
-        </svg>
-        {children}
-        {isEnabled && (
-          <div>
-            Draft mode ({c.get("ks-branch")?.value}){" "}
-            <form method="POST" action="/preview/end">
-              <button>End preview</button>
-            </form>
-          </div>
-        )}
+        <ViewportProvider isMobile={isMobile}>
+          <svg className="pointer-events-none absolute cursor-none h-0">
+            <filter id="grainy">
+              <feTurbulence
+                type="turbulence"
+                baseFrequency="0.5"
+              ></feTurbulence>
+              <feColorMatrix type="saturate" values="0"></feColorMatrix>
+            </filter>
+          </svg>
+          {children}
+          {isEnabled && (
+            <div>
+              Draft mode ({c.get("ks-branch")?.value}){" "}
+              <form method="POST" action="/preview/end">
+                <button>End preview</button>
+              </form>
+            </div>
+          )}
+        </ViewportProvider>
       </body>
     </html>
   );

@@ -15,11 +15,11 @@ export default async function layout({ children }: { children: ReactNode }) {
   return (
     <>
       <main className="max-w-screen-xl m-auto py-10 px-4 md:px-8">
-        <DefaultNav />
+        <DefaultNav settings={settings as never} />
         {children}
       </main>
-      <footer className="max-w-screen-xl m-auto p-6 mb-8 border-primary border-1 bg-muted">
-        <div className="flex flex-col-reverse md:flex-row md:justify-between gap-2">
+      <footer className="max-w-screen-xl m-auto p-4">
+        <div className="flex flex-col text-center items-center md:flex-row md:justify-between gap-2 px-6 py-3 md:mb-8 border-t-2 border-foreground">
           <div className="flex space-x-8 justify-start">
             {links.map((l, i) => (
               <Link key={i} href={l.url} className="hover:underline">
@@ -27,7 +27,7 @@ export default async function layout({ children }: { children: ReactNode }) {
               </Link>
             ))}
           </div>
-          <div className="flex space-x-2 w-full justify-center md:justify-end">
+          <div className="flex space-x-2 w-full justify-center md:justify-end text-muted-foreground text-sm md:text-base">
             <a href={""}>© Copyright 2023 {settings?.site.name}</a>
           </div>
         </div>

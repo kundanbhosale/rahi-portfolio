@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { Facebook, Instagram, Linkedin, Youtube } from "@/components/icons";
 import { keystaticReader } from "@/lib/reader";
 import { Heading } from "@/components/ui/typographt";
 import AudioWave from "@/components/audio";
+import { Hero } from "@/components/home/hero";
 
 const services = [
   {
@@ -33,78 +34,7 @@ export default async function Home() {
 
   return (
     <div className="space-y-16 md:space-y-24">
-      <div className="w-full grid md:grid-cols-2 overflow-hidden h-[700px] 2xl:mt-20 items-center border-b-2 border-foreground">
-        <div className="space-y-6">
-          {/* <div className="rounded-full overflow-hidden ring-background border border-background shadow w-fit">
-            <Image
-              src="/images/profile.jpg"
-              alt="Rahi Gurav"
-              width={75}
-              height={75}
-            />
-          </div> */}
-          <div className="relative h-fit">
-            <h1 className="text-7xl md:text-9xl font-black inline-flex">
-              {home?.title}
-            </h1>
-          </div>
-          <h2 className="text-2xl font-medium max-w-lg">{home?.designation}</h2>
-          <p className="max-w-lg">{home?.bio}</p>
-
-          <div className="flex pt-4 items-center flex-wrap gap-4">
-            <div>
-              <Button className="rounded-full" size={"lg"}>
-                Connect <ArrowUpRight className="size-4" />
-              </Button>
-            </div>
-            <div className="flex space-x-4 [&_svg]:size-8">
-              {settings?.social.instagram && (
-                <a href={settings.social.instagram}>{<Instagram />}</a>
-              )}
-              {settings?.social.facebook && (
-                <a href={settings.social.facebook}>{<Facebook />}</a>
-              )}
-              {settings?.social.linkedin && (
-                <a href={settings.social.linkedin}>{<Linkedin />}</a>
-              )}
-              {settings?.social.youtube && (
-                <a href={settings.social.youtube}>{<Youtube />}</a>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-center -z-10 relative h-full flex-1">
-          {home?.heroImg && (
-            <div
-              className={cn(
-                "hidden md:block h-full w-full grayscale",
-                home.heroImgClass || ""
-              )}
-            >
-              <Image
-                src={home?.heroImg || ""}
-                alt={settings?.site.name || ""}
-                fill
-                className="object-cover"
-                quality={80}
-              />
-            </div>
-          )}
-          {/* <div
-            className="absolute bottom-[-60%] -left-96 grayscale"
-            style={{ width: "1500px", height: "1500px" }}
-          >
-            <Image
-              src="/images/f3.png"
-              alt="Rahi Gurav"
-              fill
-              className="object-cover"
-              quality={80}
-            />
-          </div> */}
-        </div>
-      </div>
+      <Hero home={home as never} settings={settings as never} />
       <div>
         <AudioWave url={home?.audioFile || ""} />
       </div>
