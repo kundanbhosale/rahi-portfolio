@@ -93,7 +93,7 @@ export default async function Post({
       {post.coverImage && (
         <div>
           <Image
-            className="aspect-video object-cover object-center"
+            className="aspect-video object-cover object-center border-2"
             alt=""
             src={post.coverImage}
             width={1400}

@@ -97,14 +97,16 @@ export default async function Post({
   const renderable = Markdoc.transform(node);
   return (
     <div className="space-y-16 max-w-screen-md m-auto py-16 ">
-      <Heading>{post.title}</Heading>
-      <div>
-        <AuthorList authors={authorsData as never} post={post} />
+      <div className="space-y-6">
+        <Heading>{post.title}</Heading>
+        <div>
+          <AuthorList authors={authorsData as never} post={post} />
+        </div>
       </div>
       {post.coverImage && (
         <div>
           <Image
-            className="aspect-video"
+            className="aspect-video object-cover object-center border-2"
             alt=""
             src={post.coverImage}
             width={800}

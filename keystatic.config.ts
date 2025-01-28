@@ -100,6 +100,9 @@ export default config({
             image: {
               directory: "/public/uploads/rte/",
               publicPath: "/uploads/rte/",
+              transformFilename(originalFilename) {
+                return originalFilename;
+              },
             },
           },
           label: "Content",
@@ -265,6 +268,9 @@ export default config({
             image: {
               directory: "/public/uploads/rte/",
               publicPath: "/uploads/rte/",
+              transformFilename(originalFilename) {
+                return originalFilename;
+              },
             },
           },
         }),
@@ -293,6 +299,9 @@ export default config({
             image: {
               directory: "/public/uploads/rte/",
               publicPath: "/uploads/rte/",
+              transformFilename(originalFilename) {
+                return originalFilename;
+              },
             },
           },
         }),
