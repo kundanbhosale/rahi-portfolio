@@ -1,5 +1,12 @@
 site:
-  name: Rahi Gurav
+  icon: /uploads/site-icon/site/icon.png
+  title: Rahi Gurav
+posts:
+  title: Writing on programming, productivity, and life.
+projects:
+  title: Writing on programming, productivity, and life.
+contact:
+  email: connect@rahigurav.com
 social:
   linkedin: https://www.linkedin.com/in/rahigurav
   instagram: https://www.instagram.com/

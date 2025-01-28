@@ -29,7 +29,7 @@ export default function AudioWave({ url }: { url: string }) {
     // autoplay: true,
     waveColor: "#999",
     progressColor: "black",
-    url,
+    url: url || "",
     plugins: useMemo(
       () => [
         Hover.create({

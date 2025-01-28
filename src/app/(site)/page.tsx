@@ -7,8 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Facebook, Instagram, Linkedin, Youtube } from "@/components/icons";
 import { keystaticReader } from "@/lib/reader";
 import { Heading } from "@/components/ui/typographt";
-import AudioWave from "@/components/audio";
 import { Hero } from "@/components/home/hero";
+import AudioWave from "@/components/audio";
 
 const services = [
   {
@@ -91,7 +91,7 @@ export default async function Home() {
           </span>
         </h1>
         <h1 className="text-3xl mt-2 text-end text-primary font-semibold underline">
-          rahiruns@gmail.com
+          {settings?.contact.email || ""}
         </h1>
       </div>
       <div>

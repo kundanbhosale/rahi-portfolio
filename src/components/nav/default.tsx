@@ -4,12 +4,13 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useViewport } from "@/context/viewport";
 import { ArrowUpRight, Menu } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import { Facebook, Instagram, Linkedin, Youtube } from "../icons";
 import keystaticConfig from "@/keystatic.config";
 import { Entry } from "@keystatic/core/reader";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const links = (
   <>
@@ -37,7 +38,17 @@ export const DefaultNav = ({
         {path !== "/" && (
           <Link href={"/"} className="text-2xl font-black relative -top-3">
             {" "}
-            {settings.site.name}.
+            {settings.site.icon ? (
+              <Image
+                src={settings.site.icon}
+                alt={settings?.site.title}
+                width={50}
+                height={50}
+                className="border-2 border-primary aspect-square object-cover rounded-full drop-shadow-sm"
+              />
+            ) : (
+              `${settings?.site.title}.`
+            )}
           </Link>
         )}
         <Sheet>
@@ -61,7 +72,7 @@ export const DefaultNav = ({
             className="max-w-full transition-all flex flex-col"
           >
             <Link href={"/"} className="text-2xl font-black mb-8">
-              {settings.site.name}.
+              {settings?.site.title}.
             </Link>
             <div className="flex flex-col text-lg gap-4 flex-1">
               <Link href={"/"}>Home</Link>
@@ -70,11 +81,17 @@ export const DefaultNav = ({
             <div>
               <div className="grid flex-1 gap-4 mt-auto">
                 <div>
-                  <Button className="rounded-full w-full" size={"lg"}>
+                  <Link
+                    href={`mailto:${settings.contact.email}`}
+                    className={cn(
+                      buttonVariants({ size: "lg" }),
+                      "w-full rounded-full"
+                    )}
+                  >
                     Connect <ArrowUpRight className="size-4" />
-                  </Button>
+                  </Link>
                 </div>
-                <div className="flex py-4 items-center flex-wrap gap-4 justify-center border-t">
+                <div className="flex pt-4 pb-6 items-center flex-wrap gap-4 justify-center border-t">
                   <div className="flex space-x-3 [&_svg]:size-6">
                     {settings?.social.instagram && (
                       <a href={settings.social.instagram}>{<Instagram />}</a>
@@ -102,7 +119,7 @@ export const DefaultNav = ({
       {path !== "/" && (
         <Link href={"/"} className="text-2xl font-black relative">
           {" "}
-          {settings.site.name}.
+          {settings?.site.title}.
         </Link>
       )}
       <div className="drop-shadow-xl flex items-center justify-between border border-foreground px-4 py-2 w-fit fixed right-8 xl:right-[7%] top-10 bg-background z-50 rounded-full">

@@ -1,6 +1,7 @@
 import { Heading } from "@/components/ui/typographt";
 import { keystaticReader } from "@/lib/reader";
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,16 +13,27 @@ import Link from "next/link";
 //   }));
 // }
 
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await (await keystaticReader()).singletons.settings.read();
+  return {
+    title: settings?.projects?.title,
+    description: settings?.projects?.summary,
+  };
+}
+
 export default async function Page() {
   // 2. Read the "projects" collection
   const reader = await keystaticReader();
 
   const projects = await reader.collections.projects.all();
+  const settings = await reader.singletons.settings.read();
+
   return (
     <div className="relative py-16 space-y-16">
       <Heading className="max-w-xl">
-        Writing on programming, productivity, and life.
+        {settings?.posts.title || "Projects Page"}
       </Heading>
+
       <div className="grid md:grid-cols-4 gap-6">
         {projects.slice(0, 5).map((item, i) => (
           <Link

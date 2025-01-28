@@ -1,5 +1,6 @@
 import { Heading } from "@/components/ui/typographt";
 import { keystaticReader } from "@/lib/reader";
+import { Metadata } from "next";
 import Link from "next/link";
 import { Fragment } from "react";
 
@@ -11,16 +12,27 @@ import { Fragment } from "react";
 //   }));
 // }
 
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await (await keystaticReader()).singletons.settings.read();
+  return {
+    title: settings?.posts?.title,
+    description: settings?.posts?.summary,
+  };
+}
+
 export default async function Page() {
   // 2. Read the "Posts" collection
   const reader = await keystaticReader();
 
   const posts = await reader.collections.posts.all();
+  const settings = await reader.singletons.settings.read();
+
   return (
     <div className="relative py-16 space-y-16">
       <Heading className="max-w-xl">
-        Writing on programming, productivity, and life.
+        {settings?.posts.title || "Posts Page"}
       </Heading>
+
       <div className="grid md:grid-cols-[150px,auto] border-l px-8 gap-4">
         {posts.map((p, i) => (
           <Fragment key={i}>

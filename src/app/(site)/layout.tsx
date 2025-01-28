@@ -28,7 +28,7 @@ export default async function layout({ children }: { children: ReactNode }) {
             ))}
           </div>
           <div className="flex space-x-2 w-full justify-center md:justify-end text-muted-foreground text-sm md:text-base">
-            <a href={""}>© Copyright 2023 {settings?.site.name}</a>
+            <a href={""}>© Copyright 2023 {settings?.site.title}</a>
           </div>
         </div>
       </footer>

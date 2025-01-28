@@ -5,6 +5,9 @@ import { Heading } from "@/components/ui/typographt";
 import { keystaticReader } from "@/lib/reader";
 import Image from "next/image";
 import AuthorList from "@/components/blog/authors";
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getDomain } from "@/lib/domain";
 
 export const generateStaticParams = async () => {
   const reader = await keystaticReader();
@@ -15,6 +18,54 @@ export const generateStaticParams = async () => {
     slug: post.slug,
   }));
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const slug = (await params).slug;
+  const domain = await getDomain();
+
+  const post = await (await keystaticReader()).collections.posts.read(slug);
+
+  if (!post) {
+    return notFound();
+  }
+
+  const { title, publishedDate, summary = "", coverImage } = post;
+  // Convert Date to ISO string or undefined if null
+  const publishedTime = publishedDate
+    ? new Date(publishedDate).toISOString()
+    : undefined;
+
+  const ogImage = coverImage
+    ? `${domain}${coverImage}`
+    : `${domain}/og?title=${title}`;
+
+  return {
+    title,
+    description: summary || undefined,
+    openGraph: {
+      title: title,
+      description: summary || undefined,
+      type: "article",
+      publishedTime, // Now properly typed as string | undefined
+      url: `${domain}/posts/${slug}`,
+      images: [
+        {
+          url: ogImage,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: title,
+      description: summary || undefined,
+      images: [ogImage],
+    },
+  };
+}
 
 export default async function Post({
   params,

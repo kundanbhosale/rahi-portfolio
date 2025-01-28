@@ -77,6 +77,15 @@ export default config({
       previewUrl: makePreview("/about"),
 
       schema: {
+        title: fields.text({
+          label: "Title",
+          defaultValue: "About Page",
+        }),
+        summary: fields.text({
+          label: "Summary",
+          multiline: true,
+          defaultValue: "A bit information about me",
+        }),
         content: fields.markdoc({
           // formatting: true,
           // dividers: true,
@@ -99,13 +108,51 @@ export default config({
       schema: {
         site: fields.object(
           {
-            name: fields.text({ label: "Site Name" }),
+            icon: fields.file({
+              label: "Site Icon",
+              directory: "/public/uploads/site-icon",
+              publicPath: "/uploads/site-icon",
+            }),
+            title: fields.text({ label: "Site Name" }),
             summary: fields.text({
               label: "Site Meta Description",
               multiline: true,
             }),
           },
           { label: "Site Configuration" }
+        ),
+        posts: fields.object(
+          {
+            title: fields.text({ label: "Page Title" }),
+            summary: fields.text({
+              label: "Page Meta Description",
+              multiline: true,
+            }),
+          },
+          { label: "Posts Page Details" }
+        ),
+        projects: fields.object(
+          {
+            title: fields.text({ label: "Page Title" }),
+            summary: fields.text({
+              label: "Page Meta Description",
+              multiline: true,
+            }),
+          },
+          { label: "Project Page Details" }
+        ),
+        contact: fields.object(
+          {
+            email: fields.text({
+              label: "Email",
+              // description: "www.linkedin.com/in/kundan-bhosale/",
+            }),
+            phone: fields.text({
+              label: "Phone",
+              // description: "www.linkedin.com/in/kundan-bhosale/",
+            }),
+          },
+          { label: "Contact Details" }
         ),
         social: fields.object(
           {
@@ -190,6 +237,7 @@ export default config({
         coverImage: fields.image({
           label: "Image",
           directory: "public/uploads/posts",
+          publicPath: "/uploads/posts",
         }),
         wordCount: fields.integer({
           label: "Word count",

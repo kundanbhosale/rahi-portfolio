@@ -2,12 +2,13 @@
 import keystaticConfig from "@/keystatic.config";
 import { Entry } from "@keystatic/core/reader";
 import React from "react";
-import { Button } from "../ui/button";
+import { buttonVariants } from "../ui/button";
 import { ArrowUpRight } from "lucide-react";
 import { Instagram, Facebook, Linkedin, Youtube } from "../icons";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useViewport } from "@/context/viewport";
+import Link from "next/link";
 
 export const Hero = ({
   home,
@@ -23,8 +24,8 @@ export const Hero = ({
         {isMobile && (
           <div className="border-2 size-24 rounded-full relative flex items-center justify-center overflow-hidden  border-foreground my-10 drop-shadow-xl">
             <Image
-              src={home?.heroImg || ""}
-              alt={settings?.site.name || ""}
+              src={settings.site.icon || home.heroImg || ""}
+              alt={settings?.site.title || ""}
               fill
               className="object-contain grayscale"
               quality={80}
@@ -41,9 +42,12 @@ export const Hero = ({
 
         <div className="flex pt-4 items-center flex-wrap gap-4">
           <div>
-            <Button className="rounded-full" size={"lg"}>
+            <Link
+              href={`mailto:${settings.contact.email}`}
+              className={cn(buttonVariants({ size: "lg" }), "rounded-full")}
+            >
               Connect <ArrowUpRight className="size-4" />
-            </Button>
+            </Link>
           </div>
           <div className="flex space-x-4 [&_svg]:size-8">
             {settings?.social.instagram && (
@@ -73,7 +77,7 @@ export const Hero = ({
             >
               <Image
                 src={home?.heroImg || ""}
-                alt={settings?.site.name || ""}
+                alt={settings?.site.title || ""}
                 fill
                 className="object-cover"
                 quality={80}
