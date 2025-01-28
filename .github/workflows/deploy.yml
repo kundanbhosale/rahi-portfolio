@@ -13,21 +13,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Step 1: Checkout the repository
-      - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
-      # Step 2: Install Node.js with caching for pnpm
+      # Step 2: Setup Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
           cache: "pnpm"
 
-      # Step 3: Install pnpm
+      # Step 3: Ensure pnpm is installed via Corepack
       - name: Install pnpm
-        run: corepack enable && corepack prepare pnpm@latest --activate
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
 
       # Step 4: Install dependencies with pnpm
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pnpm install
 
       # Step 5: Pull Vercel Environment Information
