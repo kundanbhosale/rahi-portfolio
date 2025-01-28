@@ -22,7 +22,7 @@ export const Hero = ({
     <div className="w-full grid md:grid-cols-2 overflow-hidden xl:mt-20 pb-16 md:pb-0 md:my-0 md:h-[700px] items-center border-b-2 border-foreground">
       <div className="space-y-6">
         {isMobile && (
-          <div className="border-2 size-24 rounded-full relative flex items-center justify-center overflow-hidden  border-foreground my-10 drop-shadow-xl">
+          <div className="border-2 size-24 rounded-full relative flex items-center justify-center overflow-hidden  border-foreground mt-10 drop-shadow-xl">
             <Image
               src={settings.site.icon || home.heroImg || ""}
               alt={settings?.site.title || ""}
