@@ -1,7 +1,4 @@
 name: Vercel Production Deployment
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 on:
   push:
@@ -12,34 +9,12 @@ jobs:
   Deploy-Production:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      # Step 2: Setup Node.js environment
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          cache: "pnpm"
+      - name: Set Environment Variable
+        run: echo "VERCEL_GIT_HOOK=${{ secrets.VERCEL_GIT_HOOK }}" >> $GITHUB_ENV
 
-      # Step 3: Ensure pnpm is installed via Corepack
-      - name: Install pnpm
+      - name: Trigger Vercel Deployment
         run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
-
-      # Step 4: Install dependencies with pnpm
-      - name: Install Dependencies
-        run: pnpm install
-
-      # Step 5: Pull Vercel Environment Information
-      - name: Pull Vercel Environment Information
-        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
-      # Step 6: Build Project Artifacts
-      - name: Build Project Artifacts
-        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-
-      # Step 7: Deploy Project Artifacts to Vercel
-      - name: Deploy Project Artifacts to Vercel
-        run: npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+          curl -X GET "$VERCEL_GIT_HOOK"
