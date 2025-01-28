@@ -96,6 +96,12 @@ export default config({
           //   [2, 1],
           //   [1, 2, 1],
           // ],
+          options: {
+            image: {
+              directory: "/public/uploads/rte/",
+              publicPath: "/uploads/rte/",
+            },
+          },
           label: "Content",
           //   componentBlocks: ComponentBlocks,
         }),
@@ -255,7 +261,12 @@ export default config({
         ),
         content: fields.markdoc({
           label: "Content",
-          //   componentBlocks: ComponentBlocks,
+          options: {
+            image: {
+              directory: "/public/uploads/rte/",
+              publicPath: "/uploads/rte/",
+            },
+          },
         }),
       },
     }),
@@ -278,7 +289,12 @@ export default config({
         }),
         content: fields.markdoc({
           label: "Content",
-          //   componentBlocks: ComponentBlocks,
+          options: {
+            image: {
+              directory: "/public/uploads/rte/",
+              publicPath: "/uploads/rte/",
+            },
+          },
         }),
 
         coverImage: fields.image({
