@@ -6,6 +6,7 @@ import { ViewportProvider } from "@/context/viewport";
 import { getIsSsrMobile } from "@/context/isMobile";
 import { keystaticReader } from "@/lib/reader";
 import { getDomain } from "@/lib/domain";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -81,6 +82,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
       >
+        <GoogleAnalytics gaId="G-WWDGEFGSWL" />
         <ViewportProvider isMobile={isMobile}>
           <svg className="pointer-events-none absolute cursor-none h-0">
             <filter id="grainy">
