@@ -41,7 +41,7 @@ export const Hero = ({
         <h2 className="text-2xl font-medium max-w-lg">{home?.designation}</h2>
         <p className="max-w-lg">{home?.bio}</p>
 
-        <div className="flex pt-4 items-center flex-wrap gap-4">
+        <div className="flex pt-4 items-center flex-wrap gap-x-3 md:gap-x-4 gap-y-6">
           <div>
             <Link
               href={
@@ -50,13 +50,18 @@ export const Hero = ({
                   ? `mailto:${settings.contact.email}`
                   : "")
               }
-              className={cn(buttonVariants({ size: "lg" }), "rounded-full")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                buttonVariants({ size: isMobile ? "sm" : "lg" }),
+                "rounded-full"
+              )}
             >
               {settings.contact.meeting_link ? "Schedule Meeting" : "Email Me"}{" "}
               <ArrowUpRight className="size-4" />
             </Link>
           </div>
-          <div className="flex space-x-4 [&_svg]:size-8">
+          <div className="flex space-x-3 md:space-x-4 [&_svg]:size-6 md:[&_svg]:size-8">
             {settings.contact.meeting_link && settings?.contact.email && (
               <a href={settings.contact.email}>{<Mail strokeWidth={1.5} />}</a>
             )}
