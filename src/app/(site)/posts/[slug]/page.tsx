@@ -8,6 +8,7 @@ import AuthorList from "@/components/blog/authors";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDomain } from "@/lib/domain";
+import ContactSide from "@/components/contact/side";
 
 export const generateStaticParams = async () => {
   const reader = await keystaticReader();
@@ -96,27 +97,32 @@ export default async function Post({
 
   const renderable = Markdoc.transform(node);
   return (
-    <div className="space-y-16 max-w-screen-md m-auto py-16 ">
-      <div className="space-y-6">
-        <Heading>{post.title}</Heading>
-        <div>
-          <AuthorList authors={authorsData as never} post={post} />
+    <div className="max-w-screen-xl m-auto py-16 gap-8 grid md:grid-cols-[auto,350px]">
+      <div className="space-y-8">
+        <div className="space-y-6">
+          <Heading>{post.title}</Heading>
+          <div>
+            <AuthorList authors={authorsData as never} post={post} />
+          </div>
+        </div>
+        {post.coverImage && (
+          <div>
+            <Image
+              className="aspect-video object-cover object-center border-2"
+              alt=""
+              src={post.coverImage}
+              width={800}
+              height={800}
+            />
+          </div>
+        )}
+        {/* <Image src={post.coverImage} full /> */}
+        <div className="mt-8 prose dark:prose-invert max-w-none">
+          {Markdoc.renderers.react(renderable, React)}
         </div>
       </div>
-      {post.coverImage && (
-        <div>
-          <Image
-            className="aspect-video object-cover object-center border-2"
-            alt=""
-            src={post.coverImage}
-            width={800}
-            height={800}
-          />
-        </div>
-      )}
-      {/* <Image src={post.coverImage} full /> */}
-      <div className="mt-8 prose dark:prose-invert max-w-none">
-        {Markdoc.renderers.react(renderable, React)}
+      <div className="bg-white border p-4">
+        <ContactSide />
       </div>
     </div>
   );

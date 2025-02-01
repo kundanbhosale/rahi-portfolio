@@ -14,11 +14,11 @@ export default async function layout({ children }: { children: ReactNode }) {
   ];
   return (
     <>
-      <main className="max-w-screen-xl m-auto py-10 px-4 md:px-8">
+      <main className="max-w-screen-xl m-auto py-10 px-4 md:px-8 w-full">
         <DefaultNav settings={settings as never} />
         {children}
       </main>
-      <footer className="max-w-screen-xl m-auto p-4">
+      <footer className="max-w-screen-xl m-auto p-4 w-full">
         <div className="flex flex-col text-center items-center md:flex-row md:justify-between gap-2 px-6 py-3 md:mb-8 border-t-2 border-foreground">
           <div className="flex space-x-8 justify-start">
             {links.map((l, i) => (

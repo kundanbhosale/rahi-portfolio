@@ -1,9 +1,10 @@
 "use client";
+
 import keystaticConfig from "@/keystatic.config";
 import { Entry } from "@keystatic/core/reader";
 import React from "react";
 import { buttonVariants } from "../ui/button";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Mail } from "lucide-react";
 import { Instagram, Facebook, Linkedin, Youtube } from "../icons";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -43,13 +44,22 @@ export const Hero = ({
         <div className="flex pt-4 items-center flex-wrap gap-4">
           <div>
             <Link
-              href={`mailto:${settings.contact.email}`}
+              href={
+                settings.contact.meeting_link ||
+                (settings.contact.email
+                  ? `mailto:${settings.contact.email}`
+                  : "")
+              }
               className={cn(buttonVariants({ size: "lg" }), "rounded-full")}
             >
-              Connect <ArrowUpRight className="size-4" />
+              {settings.contact.meeting_link ? "Schedule Meeting" : "Email Me"}{" "}
+              <ArrowUpRight className="size-4" />
             </Link>
           </div>
           <div className="flex space-x-4 [&_svg]:size-8">
+            {settings.contact.meeting_link && settings?.contact.email && (
+              <a href={settings.contact.email}>{<Mail strokeWidth={1.5} />}</a>
+            )}
             {settings?.social.instagram && (
               <a href={settings.social.instagram}>{<Instagram />}</a>
             )}

@@ -10,13 +10,11 @@ import keystaticConfig from "@/keystatic.config";
 import { Entry } from "@keystatic/core/reader";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 
 const links = (
   <>
     <Link href={"/about"}>About</Link>
     <Link href={"/posts"}>Blog</Link>
-    <Link href={"/projects"}>Projects</Link>
   </>
 );
 
@@ -37,7 +35,7 @@ export const DefaultNav = ({
       <nav className="flex">
         {path !== "/" && (
           <Link href={"/"} className="text-2xl font-black relative -top-3">
-            {" "}
+            {/* {" "}
             {settings.site.icon ? (
               <Image
                 src={settings.site.icon}
@@ -48,7 +46,8 @@ export const DefaultNav = ({
               />
             ) : (
               `${settings?.site.title}.`
-            )}
+            )} */}
+            {settings?.site.title}.
           </Link>
         )}
         <Sheet>
@@ -82,13 +81,21 @@ export const DefaultNav = ({
               <div className="grid flex-1 gap-4 mt-auto">
                 <div>
                   <Link
-                    href={`mailto:${settings.contact.email}`}
+                    href={
+                      settings.contact.meeting_link ||
+                      (settings.contact.email
+                        ? `mailto:${settings.contact.email}`
+                        : "")
+                    }
                     className={cn(
                       buttonVariants({ size: "lg" }),
                       "w-full rounded-full"
                     )}
                   >
-                    Connect <ArrowUpRight className="size-4" />
+                    {settings.contact.meeting_link
+                      ? "Schedule Meeting"
+                      : "Let's Connect"}{" "}
+                    <ArrowUpRight className="size-4" />
                   </Link>
                 </div>
                 <div className="flex pt-4 pb-6 items-center flex-wrap gap-4 justify-center border-t">
@@ -122,7 +129,7 @@ export const DefaultNav = ({
           {settings?.site.title}.
         </Link>
       )}
-      <div className="drop-shadow-xl flex items-center justify-between border border-foreground px-4 py-2 w-fit fixed right-8 xl:right-[7%] top-10 bg-background z-50 rounded-full">
+      <div className="drop-shadow-xl flex items-center justify-between border border-foreground pl-4 pr-1 py-1 w-fit fixed right-8 xl:right-[7%] top-10 bg-background z-50 rounded-full">
         <div className="flex items-center space-x-6">
           <Link href={"/"}>
             <svg
@@ -135,6 +142,18 @@ export const DefaultNav = ({
             </svg>
           </Link>
           {links}
+          <Link
+            href={
+              settings.contact.meeting_link ||
+              (settings.contact.email ? `mailto:${settings.contact.email}` : "")
+            }
+            className={cn(
+              buttonVariants({ size: "sm" }),
+              "rounded-full px-4 text-sm"
+            )}
+          >
+            {settings.contact.meeting_link ? "Schedule Meeting" : "Contact"}{" "}
+          </Link>
           {/* {session.data?.user && (
           <Link href={"/profile"} className="flex gap-2 items-center">
             <span>{session.data?.user.name.split(" ")[0]}</span>
