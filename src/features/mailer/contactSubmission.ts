@@ -21,6 +21,7 @@ export const contactSubmission = async ({
     to: [toEmail],
     html: `Name: ${name}<br/>Email: ${email}<br/>Message: ${message}`,
     subject: "New Contact Form Submission",
+    replyTo: email,
   });
   console.log(d);
   return true;
