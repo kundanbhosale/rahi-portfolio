@@ -24,6 +24,7 @@ showcase:
   - title:
       name: What is Lorem Ipsum 2
       slug: what-is-lorem-ipsum-2
+    image: /uploads/home/showcase/what-is-lorem-ipsum-2/image.jpg
     summary: >+
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry's standard dummy text ever since the
