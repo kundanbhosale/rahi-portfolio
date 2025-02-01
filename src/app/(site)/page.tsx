@@ -91,24 +91,24 @@ export default async function Home() {
               >
                 <span
                   className={cn(
-                    "py-2 px-6 border-2 rounded-full items-center inline-flex w-fit absolute top-10 right-10",
-                    i !== 0 && "top-5 right-5 px-4 py-1"
+                    "p-1 md:py-2 md:px-6 border-2 rounded-full items-center inline-flex w-fit absolute top-10 right-10",
+                    i !== 0 && "top-5 right-5 md:px-4 md:py-1"
                   )}
                 >
-                  <span className={cn("", i === 0 && "text-xl")}>
+                  <span className={cn("hidden", i === 0 && "text-xl md:block")}>
                     Learn More
                   </span>
                   <ArrowUpRight
                     strokeWidth={1.3}
                     className={cn(
-                      "size-6 stroke-white",
+                      "size-4 md:size-6 stroke-white",
                       i === 0 && "md:size-8"
                     )}
                   />
                 </span>
                 <h1
                   className={cn(
-                    "truncate text-lg font-semibold line-clamp-2 block",
+                    "truncate text-lg font-semibold line-clamp-1 md:line-clamp-2 block",
                     i === 0 && "md:text-xl"
                   )}
                 >
@@ -116,7 +116,7 @@ export default async function Home() {
                 </h1>
                 <p
                   className={cn(
-                    "line-clamp-3 text-sm",
+                    "line-clamp-2 md:line-clamp-3 text-sm",
                     i === 0 && "md:text-base"
                   )}
                 >

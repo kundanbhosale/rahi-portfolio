@@ -87,6 +87,8 @@ export const DefaultNav = ({
                         ? `mailto:${settings.contact.email}`
                         : "")
                     }
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={cn(
                       buttonVariants({ size: "lg" }),
                       "w-full rounded-full"
@@ -147,6 +149,8 @@ export const DefaultNav = ({
               settings.contact.meeting_link ||
               (settings.contact.email ? `mailto:${settings.contact.email}` : "")
             }
+            target="_blank"
+            rel="noopener noreferrer"
             className={cn(
               buttonVariants({ size: "sm" }),
               "rounded-full px-4 text-sm"
