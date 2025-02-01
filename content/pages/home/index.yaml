@@ -1,5 +1,5 @@
 heroImg: /uploads/home/heroImg.png
-audioFile: /uploads/home/audioFile.mp3
+audioFile: /uploads/home/audioFile.wav
 title: Rahi Gurav.
 designation: Content Writer | Voiceover Artist | Presenter
 bio: >-
@@ -37,8 +37,8 @@ showcase:
 
 services:
   - title:
-      name: Item 1
-      slug: item-1
+      name: Content Writing
+      slug: content-writing
     summary: >-
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry's standard dummy text ever since the
