@@ -15,10 +15,13 @@ export const contactSubmission = async ({
   if (!email || !name || !message) throw new Error("All fields are required.");
   const toEmail = (await (await keystaticReader()).singletons.settings.read())
     ?.contact.email;
+
   if (!toEmail) throw Error("No receiver email found");
-  return sendEmail({
+  const d = await sendEmail({
     to: [toEmail],
     html: `Name: ${name}<br/>Email: ${email}<br/>Message: ${message}`,
     subject: "New Contact Form Submission",
   });
+  console.log(d);
+  return true;
 };

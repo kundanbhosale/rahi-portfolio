@@ -9,7 +9,7 @@ export const sendEmail = (opts: {
   html: string;
 }) => {
   return resend.emails.send({
-    from: "Rahi's Notifier <notify@resend.dev>",
+    from: "Rahi's Notifier <notify@rahigurav.com>",
     replyTo: opts.to,
     ...opts,
   });
