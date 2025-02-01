@@ -7,7 +7,6 @@ import {
   singleton,
 } from "@keystatic/core";
 import siteConfig from "./site.config";
-//   import { ComponentBlocks } from "./components/ComponentBlocks";
 
 const storage: LocalConfig["storage"] | GitHubConfig["storage"] =
   process.env.NODE_ENV === "development"
@@ -69,8 +68,92 @@ export default config({
           defaultValue:
             "Storytelling on camera is home to me. I see myself travelling the world and giving an experience to the people through my lenses and writeups. Confident, ambitious, great communicator, brave, mindful and a fast learner",
         }),
+        showcase: fields.array(
+          fields.object(
+            {
+              title: fields.slug({
+                name: {
+                  label: "Title",
+                },
+                slug: {
+                  label: "SEO-friendly slug",
+                },
+              }),
+              image: fields.image({
+                label: "Image",
+                directory: "public/uploads/home",
+                publicPath: "/uploads/home/",
+              }),
+              summary: fields.text({ label: "Summary", multiline: true }),
+              content: fields.markdoc({
+                options: {
+                  image: {
+                    directory: "/public/uploads/rte/",
+                    publicPath: "/uploads/rte/",
+                    transformFilename(originalFilename) {
+                      return originalFilename;
+                    },
+                  },
+                },
+                label: "Content",
+                //   componentBlocks: ComponentBlocks,
+              }),
+            },
+            {
+              // layout: [9, 3, 12, 12, 12, 12],
+            }
+          ),
+          {
+            label: "Showcase",
+            slugField: "title",
+            itemLabel: (p) => p.fields.title.value.name,
+          }
+        ),
+        services: fields.array(
+          fields.object(
+            {
+              // title: fields.text({ label: "Title" }),
+              title: fields.slug({
+                name: {
+                  label: "Title",
+                },
+                slug: {
+                  label: "SEO-friendly slug",
+                },
+              }),
+              image: fields.image({
+                label: "Image",
+                directory: "public/uploads/home",
+                publicPath: "/uploads/home/",
+              }),
+              summary: fields.text({ label: "Summary", multiline: true }),
+              content: fields.markdoc({
+                options: {
+                  image: {
+                    directory: "/public/uploads/rte/",
+                    publicPath: "/uploads/rte/",
+                    transformFilename(originalFilename) {
+                      return originalFilename;
+                    },
+                  },
+                },
+                label: "Content",
+                //   componentBlocks: ComponentBlocks,
+              }),
+            },
+            {
+              // layout: [9, 3, 12, 12, 12],
+            }
+          ),
+          {
+            label: "Services",
+            slugField: "title",
+            itemLabel: (p) => p.fields.title.value.name,
+          }
+        ),
       },
     }),
+
     about: singleton({
       label: "About",
       path: "content/pages/about/",
@@ -87,15 +170,6 @@ export default config({
           defaultValue: "A bit information about me",
         }),
         content: fields.markdoc({
-          // formatting: true,
-          // dividers: true,
-          // links: true,
-          // layouts: [
-          //   [1, 1],
-          //   [1, 1, 1],
-          //   [2, 1],
-          //   [1, 2, 1],
-          // ],
           options: {
             image: {
               directory: "/public/uploads/rte/",
@@ -108,6 +182,37 @@ export default config({
           label: "Content",
           //   componentBlocks: ComponentBlocks,
         }),
+        jobs: fields.array(
+          fields.object(
+            {
+              title: fields.text({
+                label: "Company / Project",
+                validation: { length: { min: 1 } },
+              }),
+              icon: fields.image({
+                label: "Icon",
+                directory: "/public/uploads/jobs/",
+                publicPath: "/uploads/jobs/",
+              }),
+              start_date: fields.date({
+                label: "Start Date",
+                validation: { isRequired: true },
+              }),
+              end_date: fields.date({ label: "End Date" }),
+              designation: fields.text({ label: "Designation " }),
+            },
+            {
+              layout: [9, 3, 6, 6, 12],
+            }
+          ),
+          {
+            label: "Jobs",
+            itemLabel: (props) =>
+              props?.fields?.designation.value +
+                " - " +
+                props.fields.title.value || "",
+          }
+        ),
       },
     }),
     settings: singleton({
@@ -140,16 +245,7 @@ export default config({
           },
           { label: "Posts Page Details" }
         ),
-        projects: fields.object(
-          {
-            title: fields.text({ label: "Page Title" }),
-            summary: fields.text({
-              label: "Page Meta Description",
-              multiline: true,
-            }),
-          },
-          { label: "Project Page Details" }
-        ),
+
         contact: fields.object(
           {
             email: fields.text({
@@ -158,6 +254,10 @@ export default config({
             }),
             phone: fields.text({
               label: "Phone",
+              // description: "www.linkedin.com/in/kundan-bhosale/",
+            }),
+            meeting_link: fields.url({
+              label: "Meeting link",
               // description: "www.linkedin.com/in/kundan-bhosale/",
             }),
           },
@@ -276,82 +376,5 @@ export default config({
         }),
       },
     }),
-    projects: collection({
-      label: "Projects",
-      path: "content/projects/*/",
-      previewUrl: makePreview("/projects/{slug}"),
-
-      slugField: "title",
-      entryLayout: "content",
-      format: {
-        contentField: "content",
-      },
-      schema: {
-        title: fields.slug({
-          name: {
-            label: "Title",
-            validation: { length: { min: 4 } },
-          },
-        }),
-        content: fields.markdoc({
-          label: "Content",
-          options: {
-            image: {
-              directory: "/public/uploads/rte/",
-              publicPath: "/uploads/rte/",
-              transformFilename(originalFilename) {
-                return originalFilename;
-              },
-            },
-          },
-        }),
-
-        coverImage: fields.image({
-          label: "Cover Image",
-          directory: "public/uploads/projects",
-          publicPath: "/uploads/projects/",
-        }),
-        summary: fields.text({
-          label: "Summary",
-          validation: { length: { min: 4, max: 200 } },
-        }),
-        publishedDate: fields.date({
-          label: "Published Date",
-          defaultValue: new Date().toISOString().split("T")[0],
-        }),
-      },
-    }),
-    // externalArticles: collection({
-    //   label: "External Article",
-    //   path: "content/externalArticles/*/",
-    //   slugField: "title",
-    //   schema: {
-    //     title: fields.slug({
-    //       name: {
-    //         label: "Title",
-    //         validation: { length: { min: 4 } },
-    //       },
-    //     }),
-    //     directLink: fields.url({
-    //       label: "Article Link",
-    //     }),
-    //     source: fields.text({
-    //       label: "Link Source",
-    //       defaultValue: "Read more.",
-    //     }),
-    //     coverImage: fields.image({
-    //       label: "Cover Image",
-    //       directory: "public/uploads/external-articles",
-    //     }),
-    //     summary: fields.text({
-    //       label: "Summary",
-    //       validation: { length: { min: 4, max: 200 } },
-    //     }),
-    //     publishedDate: fields.date({
-    //       label: "Published Date",
-    //       defaultValue: new Date().toISOString().split("T")[0],
-    //     }),
-    //   },
-    // }),
   },
 });

@@ -4,14 +4,6 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Fragment } from "react";
 
-// export async function generateStaticParams() {
-//   const posts = await keystaticReader.collections.posts.all();
-
-//   return posts.map((post) => ({
-//     id: post.slug.toString(),
-//   }));
-// }
-
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await (await keystaticReader()).singletons.settings.read();
   return {
@@ -24,7 +16,11 @@ export default async function Page() {
   // 2. Read the "Posts" collection
   const reader = await keystaticReader();
 
-  const posts = await reader.collections.posts.all();
+  const posts = (await reader.collections.posts.all()).sort(
+    (a, b) =>
+      new Date(b.entry.publishedDate || "").getTime() -
+      new Date(a.entry.publishedDate || "").getTime()
+  );
   const settings = await reader.singletons.settings.read();
 
   return (

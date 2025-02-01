@@ -80,7 +80,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen flex flex-col`}
       >
         <GoogleAnalytics gaId="G-WWDGEFGSWL" />
         <ViewportProvider isMobile={isMobile}>
