@@ -17,7 +17,7 @@ export const contactSubmission = async ({
     ?.contact.email;
   if (!toEmail) throw Error("No receiver email found");
   return sendEmail({
-    to: ["kundanmbhosale@gmail.com"],
+    to: [toEmail],
     html: `Name: ${name}<br/>Email: ${email}<br/>Message: ${message}`,
     subject: "New Contact Form Submission",
   });
