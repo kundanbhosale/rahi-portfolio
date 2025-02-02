@@ -4,7 +4,7 @@ import Markdoc from "@markdoc/markdoc";
 import { Heading } from "@/components/ui/typographt";
 import { keystaticReader } from "@/lib/reader";
 import Image from "next/image";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getDomain } from "@/lib/domain";
 import { Metadata } from "next";
 import ContactSide from "@/components/contact/side";
@@ -12,9 +12,9 @@ import ContactSide from "@/components/contact/side";
 export const generateStaticParams = async () => {
   const reader = await keystaticReader();
 
-  const showcase = await reader.collections.showcase.all();
+  const services = await reader.collections.services.all();
 
-  return showcase.map((p) => ({
+  return services.map((p) => ({
     slug: p.slug,
   }));
 };
@@ -28,13 +28,13 @@ export async function generateMetadata({
   const slug = (await params).slug;
   const reader = await keystaticReader();
 
-  const showcase = await reader.collections.showcase.read(slug);
+  const services = await reader.collections.services.read(slug);
 
-  if (!showcase) {
+  if (!services) {
     return notFound();
   }
 
-  const { title, summary = "", image } = showcase;
+  const { title, summary = "", image } = services;
 
   const ogImage = image ? `${domain}${image}` : `${domain}/og?title=${title}`;
 
@@ -45,7 +45,7 @@ export async function generateMetadata({
       title: title,
       description: summary || undefined,
       type: "article",
-      url: `${domain}/showcase/${slug}`,
+      url: `${domain}/services/${slug}`,
       images: [
         {
           url: ogImage,
@@ -70,19 +70,13 @@ export default async function Post({
 
   const slug = (await params).slug;
 
-  const showcase = await reader.collections.showcase.read(slug);
+  const services = await reader.collections.services.read(slug);
 
-  if (!showcase) {
+  if (!services) {
     return notFound();
   }
 
-  const type = showcase.data.discriminant;
-
-  if (type === "link") {
-    return redirect(showcase.data.value || "");
-  }
-
-  const { node } = await showcase.data.value();
+  const { node } = await services.content();
 
   const errors = Markdoc.validate(node);
   if (errors.length) {
@@ -94,18 +88,18 @@ export default async function Post({
   return (
     <div className="max-w-screen-xl m-auto py-16 gap-8 grid md:grid-cols-[auto,350px]">
       <div className="space-y-8">
-        {showcase.image && (
+        {services.image && (
           <div>
             <Image
               className="aspect-video object-cover object-center border-2"
               alt=""
-              src={showcase.image}
+              src={services.image}
               width={1400}
               height={1400}
             />
           </div>
         )}
-        <Heading>{showcase.title}</Heading>
+        <Heading>{services.title}</Heading>
 
         {/* <Image src={post.coverImage} full /> */}
         <div className="mt-8 prose dark:prose-invert max-w-none">
