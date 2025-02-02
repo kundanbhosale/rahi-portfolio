@@ -10,22 +10,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = [
     ["", 1],
     ["/about", 0.8],
+    ["/audio", 0.8],
   ];
   const reader = await keystaticReader();
 
-  const home = await reader.singletons.home.read();
+  const showCaseList = await reader.collections.showcase.all();
 
-  const showcase = home?.showcase.map((p) => ({
-    url: `${siteUrl}/showcase/${p.title.slug}`,
+  const showcase = showCaseList.map((p) => ({
+    url: `${siteUrl}/showcase/${p.slug}`,
     changeFrequency: "",
-    lastModified: new Date().toISOString(),
+    lastModified: new Date(p.entry.publishedDate || "").toISOString(),
     priority: 0.5,
   }));
 
-  const services = home?.services.map((p) => ({
-    url: `${siteUrl}/service/${p.title.slug}`,
+  const servicesList = await reader.collections.posts.all();
+
+  const services = servicesList.map((p) => ({
+    url: `${siteUrl}/service/${p.slug}`,
     changeFrequency: "",
-    lastModified: new Date().toISOString(),
+    lastModified: new Date(p.entry.publishedDate || "").toISOString(),
     priority: 0.5,
   }));
 
@@ -46,10 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: r[1] as number,
   }));
 
-  const r = [...staticRoutes, ...posts];
-  if (showcase) r.push(...showcase);
-
-  if (services) r.push(...services);
+  const r = [...staticRoutes, ...posts, ...showcase, ...services];
 
   return r;
 }

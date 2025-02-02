@@ -4,7 +4,7 @@ import Markdoc from "@markdoc/markdoc";
 import { Heading } from "@/components/ui/typographt";
 import { keystaticReader } from "@/lib/reader";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getDomain } from "@/lib/domain";
 import { Metadata } from "next";
 import ContactSide from "@/components/contact/side";
@@ -12,10 +12,10 @@ import ContactSide from "@/components/contact/side";
 export const generateStaticParams = async () => {
   const reader = await keystaticReader();
 
-  const home = await reader.singletons.home.read();
+  const showcase = await reader.collections.showcase.all();
 
-  return (home || { showcase: [] }).showcase.map((post) => ({
-    slug: post.title.slug,
+  return showcase.map((p) => ({
+    slug: p.slug,
   }));
 };
 
@@ -28,8 +28,8 @@ export async function generateMetadata({
   const slug = (await params).slug;
   const reader = await keystaticReader();
 
-  const home = await reader.singletons.home.read();
-  const showcase = home?.showcase.find((f) => f.title.slug === slug);
+  const showcase = await reader.collections.showcase.read(slug);
+
   if (!showcase) {
     return notFound();
   }
@@ -39,10 +39,10 @@ export async function generateMetadata({
   const ogImage = image ? `${domain}${image}` : `${domain}/og?title=${title}`;
 
   return {
-    title: title.name,
+    title: title,
     description: summary || undefined,
     openGraph: {
-      title: title.name,
+      title: title,
       description: summary || undefined,
       type: "article",
       url: `${domain}/showcase/${slug}`,
@@ -54,7 +54,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: title.name,
+      title: title,
       description: summary || undefined,
       images: [ogImage],
     },
@@ -70,19 +70,31 @@ export default async function Post({
 
   const slug = (await params).slug;
 
-  const home = await reader.singletons.home.read();
-  const showcase = home?.showcase.find((f) => f.title.slug === slug);
+  const showcase = await reader.collections.showcase.read(slug);
+
   if (!showcase) {
     return notFound();
   }
 
-  const { node } = await showcase.content();
+  const type = showcase.data.discriminant;
+
+  if (type === "link") {
+    return redirect(showcase.data.value || "");
+  }
+
+  if (type === "post") {
+    return redirect(showcase.data.value || "");
+  }
+
+  const { node } = await showcase.data.value();
+
   const errors = Markdoc.validate(node);
   if (errors.length) {
     console.error(errors);
     throw new Error("Invalid content");
   }
   const renderable = Markdoc.transform(node);
+
   return (
     <div className="max-w-screen-xl m-auto py-16 gap-8 grid md:grid-cols-[auto,350px]">
       <div className="space-y-8">
@@ -97,7 +109,7 @@ export default async function Post({
             />
           </div>
         )}
-        <Heading>{showcase.title.name}</Heading>
+        <Heading>{showcase.title}</Heading>
 
         {/* <Image src={post.coverImage} full /> */}
         <div className="mt-8 prose dark:prose-invert max-w-none">
