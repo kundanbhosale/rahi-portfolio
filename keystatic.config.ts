@@ -46,10 +46,9 @@ export default config({
           publicPath: "/uploads/home/",
         }),
         heroImgClass: fields.text({ label: "Hero Image Class Names" }),
-        audioFile: fields.file({
-          label: "Hero Audio",
-          directory: "public/uploads/home",
-          publicPath: "/uploads/home/",
+        audio: fields.relationship({
+          label: "Audio",
+          collection: "audios",
         }),
         title: fields.text({
           label: "Title",
@@ -68,89 +67,6 @@ export default config({
           defaultValue:
             "Storytelling on camera is home to me. I see myself travelling the world and giving an experience to the people through my lenses and writeups. Confident, ambitious, great communicator, brave, mindful and a fast learner",
         }),
-        showcase: fields.array(
-          fields.object(
-            {
-              title: fields.slug({
-                name: {
-                  label: "Title",
-                },
-                slug: {
-                  label: "SEO-friendly slug",
-                },
-              }),
-              image: fields.image({
-                label: "Image",
-                directory: "public/uploads/home",
-                publicPath: "/uploads/home/",
-              }),
-              summary: fields.text({ label: "Summary", multiline: true }),
-              content: fields.markdoc({
-                options: {
-                  image: {
-                    directory: "/public/uploads/rte/",
-                    publicPath: "/uploads/rte/",
-                    transformFilename(originalFilename) {
-                      return originalFilename;
-                    },
-                  },
-                },
-                label: "Content",
-                //   componentBlocks: ComponentBlocks,
-              }),
-            },
-            {
-              // layout: [9, 3, 12, 12, 12, 12],
-            }
-          ),
-          {
-            label: "Showcase",
-            slugField: "title",
-            itemLabel: (p) => p.fields.title.value.name,
-          }
-        ),
-        services: fields.array(
-          fields.object(
-            {
-              // title: fields.text({ label: "Title" }),
-              title: fields.slug({
-                name: {
-                  label: "Title",
-                },
-                slug: {
-                  label: "SEO-friendly slug",
-                },
-              }),
-              image: fields.image({
-                label: "Image",
-                directory: "public/uploads/home",
-                publicPath: "/uploads/home/",
-              }),
-              summary: fields.text({ label: "Summary", multiline: true }),
-              content: fields.markdoc({
-                options: {
-                  image: {
-                    directory: "/public/uploads/rte/",
-                    publicPath: "/uploads/rte/",
-                    transformFilename(originalFilename) {
-                      return originalFilename;
-                    },
-                  },
-                },
-                label: "Content",
-                //   componentBlocks: ComponentBlocks,
-              }),
-            },
-            {
-              // layout: [9, 3, 12, 12, 12],
-            }
-          ),
-          {
-            label: "Services",
-            slugField: "title",
-            itemLabel: (p) => p.fields.title.value.name,
-          }
-        ),
       },
     }),
 
@@ -246,6 +162,16 @@ export default config({
           { label: "Posts Page Details" }
         ),
 
+        audio: fields.object(
+          {
+            title: fields.text({ label: "Page Title" }),
+            summary: fields.text({
+              label: "Page Meta Description",
+              multiline: true,
+            }),
+          },
+          { label: "Audio Page Details" }
+        ),
         contact: fields.object(
           {
             email: fields.text({
@@ -373,6 +299,154 @@ export default config({
               },
             },
           },
+        }),
+      },
+    }),
+    showcase: collection({
+      label: "Showcase",
+      path: "content/showcase/*/",
+      previewUrl: makePreview("/showcase"),
+      slugField: "title",
+      schema: {
+        title: fields.slug({
+          name: {
+            label: "Title",
+          },
+          slug: {
+            label: "SEO-friendly slug",
+          },
+        }),
+        publishedDate: fields.date({
+          label: "Published Date",
+          defaultValue: new Date().toISOString().split("T")[0],
+        }),
+        image: fields.image({
+          label: "Image",
+          directory: "public/uploads/showcase",
+          publicPath: "/uploads/showcase/",
+        }),
+        summary: fields.text({ label: "Summary", multiline: true }),
+        data: fields.conditional(
+          fields.select({
+            label: "Content Type",
+            options: [
+              { label: "External Link", value: "link" },
+              { label: "Audio", value: "audio" },
+              { label: "Post", value: "post" },
+              { label: "Custom Content", value: "content" },
+            ],
+            defaultValue: "link",
+          }),
+          {
+            link: fields.url({ label: "URL" }),
+            audio: fields.relationship({
+              label: "Audio",
+              collection: "audios",
+            }),
+            post: fields.relationship({
+              label: "Post",
+              collection: "posts",
+            }),
+            content: fields.markdoc({
+              options: {
+                image: {
+                  directory: "/public/uploads/rte/",
+                  publicPath: "/uploads/rte/",
+                  transformFilename(originalFilename) {
+                    return originalFilename;
+                  },
+                },
+              },
+              label: "Content",
+              //   componentBlocks: ComponentBlocks,
+            }),
+          }
+        ),
+      },
+    }),
+    services: collection({
+      label: "Services",
+      path: "content/services/*/",
+      previewUrl: makePreview("/services"),
+      slugField: "title",
+      schema: {
+        title: fields.slug({
+          name: {
+            label: "Title",
+          },
+          slug: {
+            label: "SEO-friendly slug",
+          },
+        }),
+        publishedDate: fields.date({
+          label: "Published Date",
+          defaultValue: new Date().toISOString().split("T")[0],
+        }),
+        image: fields.image({
+          label: "Image",
+          directory: "public/uploads/services",
+          publicPath: "/uploads/services/",
+        }),
+        summary: fields.text({ label: "Summary", multiline: true }),
+        content: fields.markdoc({
+          options: {
+            image: {
+              directory: "/public/uploads/rte/",
+              publicPath: "/uploads/rte/",
+              transformFilename(originalFilename) {
+                return originalFilename;
+              },
+            },
+          },
+          label: "Content",
+          //   componentBlocks: ComponentBlocks,
+        }),
+      },
+    }),
+    audios: collection({
+      label: "Audios",
+      path: "content/audios/*/",
+      previewUrl: makePreview("/audios"),
+      slugField: "title",
+      schema: {
+        title: fields.slug({
+          name: {
+            label: "Title",
+          },
+          slug: {
+            label: "SEO-friendly slug",
+          },
+        }),
+        publishedDate: fields.date({
+          label: "Published Date",
+          defaultValue: new Date().toISOString().split("T")[0],
+        }),
+        audioFile: fields.file({
+          label: "Audio File",
+          directory: "public/uploads/audios",
+          publicPath: "/uploads/audios/",
+          validation: {
+            isRequired: true,
+          },
+        }),
+        image: fields.image({
+          label: "Cover Image",
+          directory: "public/uploads/audios",
+          publicPath: "/uploads/audios/",
+        }),
+        summary: fields.text({ label: "Summary", multiline: true }),
+        content: fields.markdoc({
+          options: {
+            image: {
+              directory: "/public/uploads/rte/",
+              publicPath: "/uploads/rte/",
+              transformFilename(originalFilename) {
+                return originalFilename;
+              },
+            },
+          },
+          label: "Content",
+          //   componentBlocks: ComponentBlocks,
         }),
       },
     }),

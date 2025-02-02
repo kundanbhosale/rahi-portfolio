@@ -82,6 +82,7 @@ export default async function Post({
     return <div>No Post Found</div>;
   }
   const { node } = await post.content();
+
   const errors = Markdoc.validate(node);
   if (errors.length) {
     console.error(errors);

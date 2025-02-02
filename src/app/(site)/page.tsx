@@ -37,17 +37,66 @@ export default async function Home() {
       new Date(b.entry.publishedDate || "").getTime() -
       new Date(a.entry.publishedDate || "").getTime()
   );
-  const showcase = home.showcase;
-  const services = home.services;
+
+  const showcase = (await reader.collections.showcase.all()).sort(
+    (a, b) =>
+      new Date(b.entry.publishedDate || "").getTime() -
+      new Date(a.entry.publishedDate || "").getTime()
+  );
+
+  const audio =
+    (home.audio && (await reader.collections.audios.read(home.audio))) || null;
+
+  const audioList = await reader.collections.audios.all();
+
+  const audioShowcase = audioList
+    .filter((a) => a.slug !== home.audio)
+    .slice(0, 3);
+
+  const services = await reader.collections.services.all();
 
   return (
     <div className="space-y-16 md:space-y-24">
       <Hero home={home as never} settings={settings as never} />
       <div>
-        <AudioWave url={home?.audioFile || ""} />
+        {audioShowcase.length > 0 && (
+          <div className="flex justify-start">
+            <Link
+              href={"/audio"}
+              className={cn(
+                buttonVariants({ variant: "link" }),
+                "rounded-full px-0"
+              )}
+            >
+              <span>More Voice Samples</span> <ArrowRight className="size-4" />
+            </Link>
+            {/* {audioShowcase.map((a, i) => (
+            <div key={i}>
+              <AudioWave
+                data={JSON.parse(JSON.stringify(audio)) || ""}
+                size="sm"
+              />
+            </div>
+          ))} */}
+          </div>
+        )}
+        {audio && (
+          <>
+            <div className="bg-primary/5 p-2 border border-primary/10 drop-shadow-xl">
+              <AudioWave
+                data={JSON.parse(JSON.stringify(audio)) || ""}
+                size="lg"
+              />
+            </div>
+            <p className="text-center font-light text-sm mt-2">
+              {audio.title || "Introductory voice sample of Rahi"}
+            </p>
+          </>
+        )}
       </div>
-      <div>
-        {showcase.length > 0 && (
+
+      {showcase.length > 0 && (
+        <div>
           <div className="flex justify-between gap-8 items-center">
             <h1 className="text-4xl font-semibold py-6">Showcase</h1>
             {/* <Link
@@ -63,70 +112,79 @@ export default async function Home() {
               </span>
             </Link> */}
           </div>
-        )}
 
-        <div className="grid md:grid-cols-4 gap-4">
-          {showcase.slice(0, 5).map((item, i) => (
-            <Link
-              href={"/showcase/" + item.title.slug}
-              key={i}
-              className={cn(
-                "grayscale-0 group relative cursor-pointer text-white",
-                i === 0 && "col-span-2 row-span-2"
-              )}
-            >
-              <div className="aspect-square relative">
-                <Image
-                  src={item.image || ""}
-                  fill
-                  alt=""
-                  className="aspect-square object-cover object-center"
-                />
-              </div>
-              <div
+          <div className="grid md:grid-cols-4 gap-4">
+            {showcase.slice(0, 5).map((item, i) => (
+              <Link
+                key={i}
+                href={
+                  item.entry.data.discriminant === "link"
+                    ? item.entry.data.value || ""
+                    : "/showcase/" + item.slug
+                }
+                {...(item.entry.data.discriminant === "link"
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
                 className={cn(
-                  "bg-primary cursor-pointer transition-opacity ease-in-out duration-300 group-hover:opacity-100 group-hover:visible flex absolute left-0 top-0 z-50 w-full h-full p-4 flex-col justify-end",
-                  item.image && "invisible opacity-0 bg-primary/70"
+                  "grayscale-0 group relative cursor-pointer text-white",
+                  i === 0 && "col-span-2 row-span-2"
                 )}
               >
-                <span
-                  className={cn(
-                    "p-1 md:py-2 md:px-6 border-2 rounded-full items-center inline-flex w-fit absolute top-10 right-10",
-                    i !== 0 && "top-5 right-5 md:px-4 md:py-1"
-                  )}
-                >
-                  <span className={cn("hidden", i === 0 && "text-xl md:block")}>
-                    Learn More
-                  </span>
-                  <ArrowUpRight
-                    strokeWidth={1.3}
-                    className={cn(
-                      "size-4 md:size-6 stroke-white",
-                      i === 0 && "md:size-8"
-                    )}
+                <div className="aspect-square relative">
+                  <Image
+                    src={item.entry.image || ""}
+                    fill
+                    alt=""
+                    className="aspect-square object-cover object-center"
                   />
-                </span>
-                <h1
+                </div>
+                <div
                   className={cn(
-                    "truncate text-lg font-semibold line-clamp-1 md:line-clamp-2 block",
-                    i === 0 && "md:text-xl"
+                    "bg-primary cursor-pointer transition-opacity ease-in-out duration-300 group-hover:opacity-100 group-hover:visible flex absolute left-0 top-0 z-50 w-full h-full p-4 flex-col justify-end",
+                    item.entry.image && "invisible opacity-0 bg-primary/70"
                   )}
                 >
-                  {item.title.name}
-                </h1>
-                <p
-                  className={cn(
-                    "line-clamp-2 md:line-clamp-3 text-sm",
-                    i === 0 && "md:text-base"
-                  )}
-                >
-                  {item.summary}
-                </p>
-              </div>
-            </Link>
-          ))}
+                  <span
+                    className={cn(
+                      "p-1 md:py-2 md:px-6 border-2 rounded-full items-center inline-flex w-fit absolute top-10 right-10",
+                      i !== 0 && "top-5 right-5 md:px-4 md:py-1"
+                    )}
+                  >
+                    <span
+                      className={cn("hidden", i === 0 && "text-xl md:block")}
+                    >
+                      Learn More
+                    </span>
+                    <ArrowUpRight
+                      strokeWidth={1.3}
+                      className={cn(
+                        "size-4 md:size-6 stroke-white",
+                        i === 0 && "md:size-8"
+                      )}
+                    />
+                  </span>
+                  <h1
+                    className={cn(
+                      "truncate text-lg font-semibold line-clamp-1 md:line-clamp-2 block",
+                      i === 0 && "md:text-xl"
+                    )}
+                  >
+                    {item.entry.title}
+                  </h1>
+                  <p
+                    className={cn(
+                      "line-clamp-2 md:line-clamp-3 text-sm",
+                      i === 0 && "md:text-base"
+                    )}
+                  >
+                    {item.entry.summary}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       <div className="grid md:grid-cols-3 w-full gap-4 md:gap-8">
         <h1 className="text-3xl md:text-5xl font-medium col-span-2">
           I am thrilled to answer questions about your next project{" "}
@@ -138,50 +196,54 @@ export default async function Home() {
           {settings?.contact.email || ""}
         </h1>
       </div>
-      <div>
-        <h1 className="text-4xl font-semibold py-6">My Services</h1>
-        <div className="grid md:grid-cols-3 gap-10">
-          {services.map((item, i) => (
-            <Link href={"/service/" + item.title.slug} key={i}>
-              <div className="aspect-square relative bg-muted group">
-                <div
-                  className={cn(
-                    "invisible opacity-0 bg-blue-500/70 cursor-pointer transition-opacity ease-in-out duration-300 group-hover:opacity-100 group-hover:visible absolute left-0 top-0 z-50 w-full h-full p-4 flex items-center justify-center"
-                  )}
-                >
-                  <span
+
+      {services.length > 0 && (
+        <div>
+          <h1 className="text-4xl font-semibold py-6">My Services</h1>
+
+          <div className="grid md:grid-cols-3 gap-10">
+            {services.map((item, i) => (
+              <Link href={"/service/" + item.slug} key={i}>
+                <div className="aspect-square relative bg-muted group">
+                  <div
                     className={cn(
-                      "py-2 px-6 border-2 rounded-full items-center inline-flex w-fit absolute"
+                      "invisible opacity-0 bg-blue-500/70 cursor-pointer transition-opacity ease-in-out duration-300 group-hover:opacity-100 group-hover:visible absolute left-0 top-0 z-50 w-full h-full p-4 flex items-center justify-center"
                     )}
                   >
-                    <span className={cn("text-white", i === 0 && "text-xl")}>
-                      Learn More
-                    </span>
-                    <ArrowUpRight
-                      strokeWidth={1.3}
+                    <span
                       className={cn(
-                        "size-6 stroke-white",
-                        i === 0 && "md:size-8"
+                        "py-2 px-6 border-2 rounded-full items-center inline-flex w-fit absolute"
                       )}
-                    />
-                  </span>
+                    >
+                      <span className={cn("text-white", i === 0 && "text-xl")}>
+                        Learn More
+                      </span>
+                      <ArrowUpRight
+                        strokeWidth={1.3}
+                        className={cn(
+                          "size-6 stroke-white",
+                          i === 0 && "md:size-8"
+                        )}
+                      />
+                    </span>
+                  </div>
+                  <Image
+                    src={item.entry.image || ""}
+                    fill
+                    alt=""
+                    className="aspect-square object-cover object-center grayscale"
+                  />
                 </div>
-                <Image
-                  src={item.image || ""}
-                  fill
-                  alt=""
-                  className="aspect-square object-cover object-center grayscale"
-                />
-              </div>
-              <div className="flex space-x-2">
-                <p className="font-medium text-lg line-clamp-2 mt-2">
-                  {item.title.name}
-                </p>
-              </div>
-            </Link>
-          ))}
+                <div className="flex space-x-2">
+                  <p className="font-medium text-lg line-clamp-2 mt-2">
+                    {item.entry.title}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       <div>
         <h1 className="text-4xl font-semibold py-6">Few Articles I Wrote:</h1>
         <div className="grid md:grid-cols-3 gap-8">
