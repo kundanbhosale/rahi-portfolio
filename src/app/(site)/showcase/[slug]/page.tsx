@@ -86,6 +86,10 @@ export default async function Post({
     return redirect(showcase.data.value || "");
   }
 
+  if (type === "audio") {
+    return null;
+  }
+
   const { node } = await showcase.data.value();
 
   const errors = Markdoc.validate(node);
