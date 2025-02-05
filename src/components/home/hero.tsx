@@ -50,8 +50,12 @@ export const Hero = ({
                   ? `mailto:${settings.contact.email}`
                   : "")
               }
-              target="_blank"
-              rel="noopener noreferrer"
+              target={settings.contact.meeting_link ? "_blank" : undefined}
+              rel={
+                settings.contact.meeting_link
+                  ? "noopener noreferrer"
+                  : undefined
+              }
               className={cn(
                 buttonVariants({ size: isMobile ? "sm" : "lg" }),
                 "rounded-full"
