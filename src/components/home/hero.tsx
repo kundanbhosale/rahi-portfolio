@@ -67,7 +67,9 @@ export const Hero = ({
           </div>
           <div className="flex space-x-3 md:space-x-4 [&_svg]:size-6 md:[&_svg]:size-8">
             {settings.contact.meeting_link && settings?.contact.email && (
-              <a href={settings.contact.email}>{<Mail strokeWidth={1.5} />}</a>
+              <a href={`mailto:${settings.contact.email}`}>
+                {<Mail strokeWidth={1.5} />}
+              </a>
             )}
             {settings?.social.instagram && (
               <a href={settings.social.instagram}>{<Instagram />}</a>
