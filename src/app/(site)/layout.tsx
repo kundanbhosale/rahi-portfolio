@@ -8,9 +8,10 @@ export default async function layout({ children }: { children: ReactNode }) {
   const settings = await reader.singletons.settings.read();
 
   const links = [
+    { title: "Home", url: "/" },
     { title: "About", url: "/about" },
     { title: "Blog", url: "/posts" },
-    { title: "Projects", url: "/projects" },
+    // { title: "Projects", url: "/projects" },
   ];
   return (
     <>

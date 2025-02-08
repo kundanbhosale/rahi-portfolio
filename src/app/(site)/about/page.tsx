@@ -5,12 +5,7 @@ import { Heading } from "@/components/ui/typographt";
 import { keystaticReader } from "@/lib/reader";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { ArrowUpRight, Mail } from "lucide-react";
-import { Facebook, Instagram, Linkedin, Youtube } from "@/components/icons";
-import { getIsSsrMobile } from "@/context/isMobile";
+import ContactBtns from "@/components/contact/buttonts";
 
 export async function generateMetadata(): Promise<Metadata> {
   const about = await (await keystaticReader()).singletons.about.read();
@@ -25,16 +20,15 @@ const Page = async () => {
   const reader = await keystaticReader();
   const about = await reader.singletons.about.read();
   const settings = await reader.singletons.settings.read();
-
   if (!about) return notFound();
   const { node } = await about.content();
+
   const errors = Markdoc.validate(node);
   if (errors.length) {
     console.error(errors);
     throw new Error("Invalid content");
   }
   const renderable = Markdoc.transform(node);
-  const isMobile = await getIsSsrMobile();
 
   return (
     <div className="max-w-screen-lg m-auto py-16">
@@ -58,52 +52,7 @@ const Page = async () => {
             {about.title || "About Page"}
           </Heading>
           {Markdoc.renderers.react(renderable, React)}
-          <div className="flex pt-4 items-center flex-wrap gap-x-3 md:gap-x-4 gap-y-6">
-            <div>
-              <Link
-                href={
-                  settings?.contact.meeting_link ||
-                  (settings?.contact.email
-                    ? `mailto:${settings.contact.email}`
-                    : "")
-                }
-                target={settings?.contact.meeting_link ? "_blank" : undefined}
-                rel={
-                  settings?.contact.meeting_link
-                    ? "noopener noreferrer"
-                    : undefined
-                }
-                className={cn(
-                  buttonVariants({ size: isMobile ? "sm" : "lg" }),
-                  "rounded-full"
-                )}
-              >
-                {settings?.contact.meeting_link
-                  ? "Schedule Meeting"
-                  : "Email Me"}{" "}
-                <ArrowUpRight className="size-4" />
-              </Link>
-            </div>
-            <div className="flex space-x-3 md:space-x-4 [&_svg]:size-6 md:[&_svg]:size-8 not-italic">
-              {settings?.contact.meeting_link && settings?.contact.email && (
-                <a href={`mailto:${settings.contact.email}`}>
-                  {<Mail strokeWidth={1.5} />}
-                </a>
-              )}
-              {settings?.social.instagram && (
-                <a href={settings.social.instagram}>{<Instagram />}</a>
-              )}
-              {settings?.social.facebook && (
-                <a href={settings.social.facebook}>{<Facebook />}</a>
-              )}
-              {settings?.social.linkedin && (
-                <a href={settings.social.linkedin}>{<Linkedin />}</a>
-              )}
-              {settings?.social.youtube && (
-                <a href={settings.social.youtube}>{<Youtube />}</a>
-              )}
-            </div>
-          </div>
+          <ContactBtns settings={settings as never} />
         </div>
       </div>
     </div>
