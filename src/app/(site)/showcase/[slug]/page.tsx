@@ -8,6 +8,7 @@ import { notFound, redirect } from "next/navigation";
 import { getDomain } from "@/lib/domain";
 import { Metadata } from "next";
 import ContactSide from "@/components/contact/side";
+import ContactBtns from "@/components/contact/buttonts";
 
 export const generateStaticParams = async () => {
   const reader = await keystaticReader();
@@ -71,7 +72,7 @@ export default async function Post({
   const slug = (await params).slug;
 
   const showcase = await reader.collections.showcase.read(slug);
-
+  const settings = await reader.singletons.settings.read();
   if (!showcase) {
     return notFound();
   }
@@ -119,6 +120,7 @@ export default async function Post({
         <div className="mt-8 prose dark:prose-invert max-w-none">
           {Markdoc.renderers.react(renderable, React)}
         </div>
+        <ContactBtns settings={settings as never} />
       </div>
       <div className="bg-white border p-4">
         <ContactSide />
