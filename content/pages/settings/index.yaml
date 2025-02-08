@@ -1,8 +1,18 @@
 site:
   icon: /uploads/site-icon/site/icon.png
   title: Rahi Gurav
+  summary: >-
+    This website was created for people like you who are enthusiasts of travel,
+    food, tech, business, and life. Here, Rahi writes blogs that you can relate
+    to and learn from. There’s a slight chance you might crack up, break down,
+    or even giggle at times. The voiceovers will take you on an unreserved
+    journey. Bending her voice to bring stories to life is her specialty. You
+    might end up accepting her as your best friend, someone who helps you with
+    travel guides, technological updates, business hacks, and life experiences.
+    Her DMs are always wide open, where you can slide into her arms.
 posts:
   title: Writing on programming, productivity, and life.
+audio: {}
 contact:
   email: rahiruns@gmail.com
   meeting_link: https://calendly.com/rahiruns/30min
