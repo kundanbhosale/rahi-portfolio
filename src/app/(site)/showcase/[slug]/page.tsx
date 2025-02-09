@@ -30,14 +30,16 @@ export async function generateMetadata({
   const reader = await keystaticReader();
 
   const showcase = await reader.collections.showcase.read(slug);
-
+  const settings = await reader.singletons.settings.read();
   if (!showcase) {
     return notFound();
   }
 
   const { title, summary = "", image } = showcase;
 
-  const ogImage = image ? `${domain}${image}` : `${domain}/og?title=${title}`;
+  const ogImage = image
+    ? `${domain}${image}`
+    : `${domain}${settings?.site.icon}`;
 
   return {
     title: title,
@@ -47,11 +49,7 @@ export async function generateMetadata({
       description: summary || undefined,
       type: "article",
       url: `${domain}/showcase/${slug}`,
-      images: [
-        {
-          url: ogImage,
-        },
-      ],
+      images: ogImage,
     },
     twitter: {
       card: "summary_large_image",

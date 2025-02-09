@@ -35,9 +35,7 @@ export async function generateMetadata({
     return notFound();
   }
 
-  const { title, summary = "", image } = services;
-
-  const ogImage = image ? `${domain}${image}` : `${domain}/og?title=${title}`;
+  const { title, summary = "" } = services;
 
   return {
     title: title,
@@ -47,17 +45,11 @@ export async function generateMetadata({
       description: summary || undefined,
       type: "article",
       url: `${domain}/services/${slug}`,
-      images: [
-        {
-          url: ogImage,
-        },
-      ],
     },
     twitter: {
       card: "summary_large_image",
       title: title,
       description: summary || undefined,
-      images: [ogImage],
     },
   };
 }

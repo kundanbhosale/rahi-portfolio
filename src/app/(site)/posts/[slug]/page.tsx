@@ -27,8 +27,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const slug = (await params).slug;
   const domain = await getDomain();
-
-  const post = await (await keystaticReader()).collections.posts.read(slug);
+  const reader = await keystaticReader();
+  const post = await reader.collections.posts.read(slug);
+  const settings = await reader.singletons.settings.read();
 
   if (!post) {
     return notFound();
@@ -42,7 +43,7 @@ export async function generateMetadata({
 
   const ogImage = coverImage
     ? `${domain}${coverImage}`
-    : `${domain}/og?title=${title}`;
+    : `${domain}${settings?.site.icon}`;
 
   return {
     title,
@@ -53,11 +54,7 @@ export async function generateMetadata({
       type: "article",
       publishedTime, // Now properly typed as string | undefined
       url: `${domain}/posts/${slug}`,
-      images: [
-        {
-          url: ogImage,
-        },
-      ],
+      images: ogImage,
     },
     twitter: {
       card: "summary_large_image",
