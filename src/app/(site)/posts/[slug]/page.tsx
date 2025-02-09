@@ -40,7 +40,7 @@ export async function generateMetadata({
     ? new Date(publishedDate).toISOString()
     : undefined;
 
-  const ogImage = coverImage ? `${domain}${coverImage}` : ``;
+  const ogImage = coverImage ? `${domain}${coverImage}` : undefined;
 
   return {
     title,
@@ -51,13 +51,13 @@ export async function generateMetadata({
       type: "article",
       publishedTime, // Now properly typed as string | undefined
       url: `${domain}/posts/${slug}`,
-      images: ogImage,
+      ...(ogImage && { images: ogImage }),
     },
     twitter: {
       card: "summary_large_image",
       title: title,
       description: summary || undefined,
-      images: [ogImage],
+      ...(ogImage && { images: [ogImage] }),
     },
   };
 }
