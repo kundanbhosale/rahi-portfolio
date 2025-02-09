@@ -30,16 +30,13 @@ export async function generateMetadata({
   const reader = await keystaticReader();
 
   const showcase = await reader.collections.showcase.read(slug);
-  const settings = await reader.singletons.settings.read();
   if (!showcase) {
     return notFound();
   }
 
   const { title, summary = "", image } = showcase;
 
-  const ogImage = image
-    ? `${domain}${image}`
-    : `${domain}${settings?.site.icon}`;
+  const ogImage = image ? `${domain}${image}` : "";
 
   return {
     title: title,

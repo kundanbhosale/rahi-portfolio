@@ -29,7 +29,6 @@ export async function generateMetadata({
   const domain = await getDomain();
   const reader = await keystaticReader();
   const post = await reader.collections.posts.read(slug);
-  const settings = await reader.singletons.settings.read();
 
   if (!post) {
     return notFound();
@@ -41,9 +40,7 @@ export async function generateMetadata({
     ? new Date(publishedDate).toISOString()
     : undefined;
 
-  const ogImage = coverImage
-    ? `${domain}${coverImage}`
-    : `${domain}${settings?.site.icon}`;
+  const ogImage = coverImage ? `${domain}${coverImage}` : ``;
 
   return {
     title,

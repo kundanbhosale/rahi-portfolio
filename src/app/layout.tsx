@@ -46,7 +46,6 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: settings?.site.title,
       locale: "en_US",
       type: "website",
-      images: (settings?.site.icon && settings?.site.icon) || undefined,
     },
     robots: {
       index: true,
@@ -63,7 +62,6 @@ export async function generateMetadata(): Promise<Metadata> {
       title: settings?.site.title,
       card: "summary_large_image",
       description: settings?.site.summary,
-      images: (settings?.site.icon && settings?.site.icon) || undefined,
     },
     verification: {
       // google: "eZSdmzAXlLkKhNJzfgwDqWORghxnJ8qR9_CHdAh5-xw",
