@@ -23,7 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  const servicesList = await reader.collections.posts.all();
+  const servicesList = await reader.collections.services.all();
 
   const services = servicesList.map((p) => ({
     url: `${siteUrl}/service/${p.slug}`,
