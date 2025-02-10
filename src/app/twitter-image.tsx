@@ -16,7 +16,7 @@ export default async function Icon() {
       // ImageResponse JSX element
       <div
         style={{
-          fontSize: 48,
+          fontSize: 128,
           background: "black",
           width: "100%",
           height: "100%",
