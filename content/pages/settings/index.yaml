@@ -5,7 +5,8 @@ site:
     This website consists blogs related to travel, food, business, tech, SaaS,
     and life. Voiceover and voice acting for wide range of genres.  Voiceovers
     for advertisements, commercials, narration, learning, audiobooks, and more. 
-posts: {}
+posts:
+  title: Travel, Food and Lifestyle
 audio: {}
 contact:
   email: rahiruns@gmail.com
