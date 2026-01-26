@@ -249,7 +249,7 @@ export default config({
       label: "Posts",
       path: "content/posts/*/",
       previewUrl: makePreview("/posts/{slug}"),
-
+      columns: ['title', 'publishedDate'], 
       slugField: "title",
       entryLayout: "content",
       format: {
@@ -307,6 +307,7 @@ export default config({
       path: "content/showcase/*/",
       previewUrl: makePreview("/showcase"),
       slugField: "title",
+      columns: ['title', 'publishedDate'], 
       schema: {
         title: fields.slug({
           name: {
@@ -369,6 +370,7 @@ export default config({
       path: "content/services/*/",
       previewUrl: makePreview("/services"),
       slugField: "title",
+      columns: ['title', 'publishedDate'], 
       schema: {
         title: fields.slug({
           name: {
@@ -408,6 +410,7 @@ export default config({
       path: "content/audios/*/",
       previewUrl: makePreview("/audios"),
       slugField: "title",
+      columns: ['title', 'publishedDate'], 
       schema: {
         title: fields.slug({
           name: {
