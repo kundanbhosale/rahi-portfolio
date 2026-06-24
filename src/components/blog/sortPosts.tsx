@@ -37,7 +37,7 @@ export default function SortPosts({
           router.replace(`/posts?category=${v === "all" ? "" : v}`)
         }
       >
-        <SelectTrigger title="Sort By Category" className="w-full h-16 text-lg">
+        <SelectTrigger title="Sort By Category" className="w-full h-12 text-lg">
           <span>
             <span className="inline-flex"> Sort By:&nbsp;</span>
             <SelectValue placeholder="Sort By Category" />
