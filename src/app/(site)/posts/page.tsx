@@ -1,7 +1,6 @@
 import SortPosts from "@/components/blog/sortPosts";
 import { Heading } from "@/components/ui/typographt";
 import { keystaticReader } from "@/lib/reader";
-import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 import Link from "next/link";
 import { Fragment } from "react";
