@@ -32,6 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
       default: settings?.site.title || "",
       template: `%s ${settings?.site.title && `| ${settings?.site.title}`}`,
     },
+
     // icons: {
     //   apple: "/favicon/apple-touch-icon.png",
     //   icon: ["/favicon/favicon-16x16.png", "/favicon/favicon-32x32.png"],

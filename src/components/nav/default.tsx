@@ -54,7 +54,7 @@ export const DefaultNav = ({
           <SheetTrigger
             className={cn(
               "fixed drop-shadow-xl top-5 right-5 z-10",
-              !client && "hidden"
+              !client && "hidden",
             )}
             asChild
           >
@@ -62,6 +62,7 @@ export const DefaultNav = ({
               className="rounded-full [&_svg]:size-6 size-10"
               variant={"default"}
               size={"icon"}
+              title="Menu"
             >
               <Menu />
             </Button>
@@ -91,8 +92,9 @@ export const DefaultNav = ({
                     rel="noopener noreferrer"
                     className={cn(
                       buttonVariants({ size: "lg" }),
-                      "w-full rounded-full"
+                      "w-full rounded-full",
                     )}
+                    title="Email"
                   >
                     {settings.contact.meeting_link
                       ? "Schedule Meeting"
@@ -153,10 +155,12 @@ export const DefaultNav = ({
             rel="noopener noreferrer"
             className={cn(
               buttonVariants({ size: "sm" }),
-              "rounded-full px-4 text-sm"
+              "rounded-full px-4 text-sm",
             )}
           >
-            {settings.contact.meeting_link ? "Schedule Meeting" : "Contact"}{" "}
+            {settings.contact.meeting_link
+              ? "Schedule Meeting"
+              : "Contact"}{" "}
           </Link>
           {/* {session.data?.user && (
           <Link href={"/profile"} className="flex gap-2 items-center">

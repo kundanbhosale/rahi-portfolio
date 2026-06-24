@@ -119,7 +119,7 @@ export default config({
             },
             {
               layout: [9, 3, 6, 6, 12],
-            }
+            },
           ),
           {
             label: "Jobs",
@@ -127,7 +127,7 @@ export default config({
               props?.fields?.designation.value +
                 " - " +
                 props.fields.title.value || "",
-          }
+          },
         ),
       },
     }),
@@ -149,7 +149,7 @@ export default config({
               multiline: true,
             }),
           },
-          { label: "Site Configuration" }
+          { label: "Site Configuration" },
         ),
         posts: fields.object(
           {
@@ -159,7 +159,7 @@ export default config({
               multiline: true,
             }),
           },
-          { label: "Posts Page Details" }
+          { label: "Posts Page Details" },
         ),
 
         audio: fields.object(
@@ -170,7 +170,7 @@ export default config({
               multiline: true,
             }),
           },
-          { label: "Audio Page Details" }
+          { label: "Audio Page Details" },
         ),
         contact: fields.object(
           {
@@ -187,7 +187,7 @@ export default config({
               // description: "www.linkedin.com/in/kundan-bhosale/",
             }),
           },
-          { label: "Contact Details" }
+          { label: "Contact Details" },
         ),
         social: fields.object(
           {
@@ -216,7 +216,7 @@ export default config({
             label: "Social Links",
             description: "Add your social media links here...",
             layout: [6, 6, 6, 6, 12],
-          }
+          },
         ),
       },
     }),
@@ -245,11 +245,34 @@ export default config({
         }),
       },
     }),
+    categories: collection({
+      label: "Categories",
+      path: "content/categories/*",
+
+      slugField: "name",
+      schema: {
+        name: fields.slug({
+          name: {
+            label: "Name",
+            validation: {
+              length: {
+                min: 1,
+              },
+            },
+          },
+        }),
+        // avatar: fields.image({
+        //   label: "Author avatar",
+        //   directory: "public/uploads/authors",
+        //   publicPath: "/uploads/authors/",
+        // }),
+      },
+    }),
     posts: collection({
       label: "Posts",
       path: "content/posts/*/",
       previewUrl: makePreview("/posts/{slug}"),
-      columns: ['title', 'publishedDate'], 
+
       slugField: "title",
       entryLayout: "content",
       format: {
@@ -286,8 +309,12 @@ export default config({
             label: "Authors",
             validation: { length: { min: 1 } },
             itemLabel: (props) => props.value || "Please select an author",
-          }
+          },
         ),
+        category: fields.relationship({
+          label: "Category",
+          collection: "categories",
+        }),
         content: fields.markdoc({
           label: "Content",
           options: {
@@ -307,7 +334,6 @@ export default config({
       path: "content/showcase/*/",
       previewUrl: makePreview("/showcase"),
       slugField: "title",
-      columns: ['title', 'publishedDate'], 
       schema: {
         title: fields.slug({
           name: {
@@ -361,7 +387,7 @@ export default config({
               label: "Content",
               //   componentBlocks: ComponentBlocks,
             }),
-          }
+          },
         ),
       },
     }),
@@ -370,7 +396,6 @@ export default config({
       path: "content/services/*/",
       previewUrl: makePreview("/services"),
       slugField: "title",
-      columns: ['title', 'publishedDate'], 
       schema: {
         title: fields.slug({
           name: {
@@ -410,7 +435,6 @@ export default config({
       path: "content/audios/*/",
       previewUrl: makePreview("/audios"),
       slugField: "title",
-      columns: ['title', 'publishedDate'], 
       schema: {
         title: fields.slug({
           name: {

@@ -58,7 +58,7 @@ export const Hero = ({
               }
               className={cn(
                 buttonVariants({ size: isMobile ? "sm" : "lg" }),
-                "rounded-full"
+                "rounded-full",
               )}
             >
               {settings.contact.meeting_link ? "Schedule Meeting" : "Email Me"}{" "}
@@ -72,16 +72,24 @@ export const Hero = ({
               </a>
             )}
             {settings?.social.instagram && (
-              <a href={settings.social.instagram}>{<Instagram />}</a>
+              <a href={settings.social.instagram} title="Instagram">
+                {<Instagram />}
+              </a>
             )}
             {settings?.social.facebook && (
-              <a href={settings.social.facebook}>{<Facebook />}</a>
+              <a href={settings.social.facebook} title="Facebook">
+                {<Facebook />}
+              </a>
             )}
             {settings?.social.linkedin && (
-              <a href={settings.social.linkedin}>{<Linkedin />}</a>
+              <a href={settings.social.linkedin} title="Linkedin">
+                {<Linkedin />}
+              </a>
             )}
             {settings?.social.youtube && (
-              <a href={settings.social.youtube}>{<Youtube />}</a>
+              <a href={settings.social.youtube} title="Youtube">
+                {<Youtube />}
+              </a>
             )}
           </div>
         </div>
@@ -93,7 +101,7 @@ export const Hero = ({
             <div
               className={cn(
                 "hidden md:block h-full w-full grayscale",
-                home.heroImgClass || ""
+                home.heroImgClass || "",
               )}
             >
               <Image

@@ -9,6 +9,7 @@ import AudioWave from "@/components/audio";
 import { Entry } from "@keystatic/core/reader";
 import keystaticConfig from "@/keystatic.config";
 import ContactSide from "@/components/contact/side";
+import SortPosts from "@/components/blog/sortPosts";
 
 // const services = [
 //   {
@@ -29,25 +30,26 @@ export default async function Home() {
   const reader = await keystaticReader();
   const settings = await reader.singletons.settings.read();
   const home = JSON.parse(
-    JSON.stringify(await reader.singletons.home.read())
+    JSON.stringify(await reader.singletons.home.read()),
   ) as Entry<(typeof keystaticConfig)["singletons"]["home"]>;
 
   const posts = (await reader.collections.posts.all()).sort(
     (a, b) =>
       new Date(b.entry.publishedDate || "").getTime() -
-      new Date(a.entry.publishedDate || "").getTime()
+      new Date(a.entry.publishedDate || "").getTime(),
   );
 
   const showcase = (await reader.collections.showcase.all()).sort(
     (a, b) =>
       new Date(b.entry.publishedDate || "").getTime() -
-      new Date(a.entry.publishedDate || "").getTime()
+      new Date(a.entry.publishedDate || "").getTime(),
   );
 
   const audio =
     (home.audio && (await reader.collections.audios.read(home.audio))) || null;
 
   const audioList = await reader.collections.audios.all();
+  const cats = await reader.collections.categories.all();
 
   const audioShowcase = audioList
     .filter((a) => a.slug !== home.audio)
@@ -65,7 +67,7 @@ export default async function Home() {
               href={"/audio"}
               className={cn(
                 buttonVariants({ variant: "link" }),
-                "rounded-full px-0"
+                "rounded-full px-0",
               )}
             >
               <span>More Voice Samples</span> <ArrowRight className="size-4" />
@@ -127,7 +129,7 @@ export default async function Home() {
                   : {})}
                 className={cn(
                   "grayscale-0 group relative cursor-pointer text-white",
-                  i === 0 && "col-span-2 row-span-2"
+                  i === 0 && "col-span-2 row-span-2",
                 )}
               >
                 <div className="aspect-square relative">
@@ -141,13 +143,13 @@ export default async function Home() {
                 <div
                   className={cn(
                     "bg-primary cursor-pointer transition-opacity ease-in-out duration-300 group-hover:opacity-100 group-hover:visible flex absolute left-0 top-0 z-50 w-full h-full p-4 flex-col justify-end",
-                    item.entry.image && "invisible opacity-0 bg-primary/70"
+                    item.entry.image && "invisible opacity-0 bg-primary/70",
                   )}
                 >
                   <span
                     className={cn(
                       "p-1 md:py-2 md:px-6 border-2 rounded-full items-center inline-flex w-fit absolute top-10 right-10",
-                      i !== 0 && "top-5 right-5 md:px-4 md:py-1"
+                      i !== 0 && "top-5 right-5 md:px-4 md:py-1",
                     )}
                   >
                     <span
@@ -159,14 +161,14 @@ export default async function Home() {
                       strokeWidth={1.3}
                       className={cn(
                         "size-4 md:size-6 stroke-white",
-                        i === 0 && "md:size-8"
+                        i === 0 && "md:size-8",
                       )}
                     />
                   </span>
                   <h1
                     className={cn(
                       "truncate text-lg font-semibold line-clamp-1 md:line-clamp-2 block",
-                      i === 0 && "md:text-xl"
+                      i === 0 && "md:text-xl",
                     )}
                   >
                     {item.entry.title}
@@ -174,7 +176,7 @@ export default async function Home() {
                   <p
                     className={cn(
                       "line-clamp-2 md:line-clamp-3 text-sm",
-                      i === 0 && "md:text-base"
+                      i === 0 && "md:text-base",
                     )}
                   >
                     {item.entry.summary}
@@ -207,12 +209,12 @@ export default async function Home() {
                 <div className="aspect-square relative bg-muted group">
                   <div
                     className={cn(
-                      "invisible opacity-0 bg-blue-500/70 cursor-pointer transition-opacity ease-in-out duration-300 group-hover:opacity-100 group-hover:visible absolute left-0 top-0 z-50 w-full h-full p-4 flex items-center justify-center"
+                      "invisible opacity-0 bg-blue-500/70 cursor-pointer transition-opacity ease-in-out duration-300 group-hover:opacity-100 group-hover:visible absolute left-0 top-0 z-50 w-full h-full p-4 flex items-center justify-center",
                     )}
                   >
                     <span
                       className={cn(
-                        "py-2 px-6 border-2 rounded-full items-center inline-flex w-fit absolute"
+                        "py-2 px-6 border-2 rounded-full items-center inline-flex w-fit absolute",
                       )}
                     >
                       <span className={cn("text-white", i === 0 && "text-xl")}>
@@ -222,7 +224,7 @@ export default async function Home() {
                         strokeWidth={1.3}
                         className={cn(
                           "size-6 stroke-white",
-                          i === 0 && "md:size-8"
+                          i === 0 && "md:size-8",
                         )}
                       />
                     </span>
@@ -246,6 +248,8 @@ export default async function Home() {
       )}
       <div>
         <h1 className="text-4xl font-semibold py-6">Few Articles I Wrote:</h1>
+        <SortPosts cats={cats} category="all" />
+        <br />
         <div className="grid md:grid-cols-3 gap-8">
           <div className="space-y-8 md:col-span-2">
             {posts.slice(0, 6).map((item, i) => (
@@ -275,7 +279,7 @@ export default async function Home() {
               href={"/posts"}
               className={cn(
                 buttonVariants({ variant: "default", size: "default" }),
-                "rounded-full"
+                "rounded-full",
               )}
             >
               <span>View All Articles</span>

@@ -46,7 +46,7 @@ export default function AudioWave({
           labelSize: "10px",
         }),
       ],
-      []
+      [],
     ),
   });
 
@@ -90,6 +90,7 @@ export default function AudioWave({
           <button
             onClick={onPlayPause}
             className="size-10 flex border items-center rounded-full justify-center hover:bg-background bg-foreground [&_svg]:fill-background hover:[&_svg]:fill-foreground transition-all ease-in hover:scale-150"
+            title="Play Or Pause"
           >
             {isPlaying ? <Pause /> : <Play />}
           </button>

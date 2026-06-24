@@ -15,7 +15,7 @@ export default async function layout({ children }: { children: ReactNode }) {
   ];
   return (
     <>
-      <main className="max-w-screen-xl m-auto py-10 px-4 md:px-8 w-full">
+      <main className="max-w-screen-xl mx-auto py-10 px-4 md:px-8 w-full">
         <DefaultNav settings={settings as never} />
         {children}
       </main>
@@ -29,7 +29,13 @@ export default async function layout({ children }: { children: ReactNode }) {
             ))}
           </div>
           <div className="flex space-x-2 w-full justify-center md:justify-end text-muted-foreground text-sm md:text-base">
-            <a href={""}>© Copyright 2023 {settings?.site.title}</a>
+            <p>
+              © Copyright 2023 <a href={"/"}>{settings?.site.title}</a> | Built
+              By&nbsp;
+              <a href={"https://www.kbstack.com"} className="underline">
+                KBStack
+              </a>
+            </p>
           </div>
         </div>
       </footer>
